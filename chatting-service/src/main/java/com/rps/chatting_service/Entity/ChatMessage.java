@@ -23,7 +23,8 @@ public class ChatMessage {
     private String groupId;
     private String sender;
     private String content;
-    private long timestamp;
+    private Long timestamp;
+    private  String roles;
 
     // getters/setters
 }

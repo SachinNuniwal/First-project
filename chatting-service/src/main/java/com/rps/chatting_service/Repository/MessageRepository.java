@@ -10,4 +10,6 @@ public interface MessageRepository extends JpaRepository<ChatMessage, Long> {
     List<ChatMessage> findByGroupIdOrderByTimestampAsc(String groupId);
 
     List<ChatMessage> findByGroupIdAndTimestampGreaterThan(String groupId, long timestamp);
+
+    List<ChatMessage> findByGroupId(String groupId);
 }

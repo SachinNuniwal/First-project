@@ -8,20 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/messages")
+@CrossOrigin("*")
 public class MessageController {
 
     @Autowired
     private MessageRepository repo;
 
-    @GetMapping("/{groupId}")
-    public List<ChatMessage> getMessages(
-            @PathVariable String groupId,
-            @RequestParam(required = false) Long after
-    ) {
-        if (after != null) {
-            return repo.findByGroupIdAndTimestampGreaterThan(groupId, after);
-        }
-        return repo.findByGroupIdOrderByTimestampAsc(groupId);
+    @GetMapping("/all_messages/{groupId}")
+    public List<ChatMessage> getAllMessage(@PathVariable String groupId) {
+        List<ChatMessage>  data=repo.findByGroupId(groupId);
+        return  data;
     }
 }
