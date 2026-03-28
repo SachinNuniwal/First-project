@@ -4,7 +4,8 @@ import SockJS from "sockjs-client/dist/sockjs";
 class SocketService {
   constructor() {
     this.client = null;
-    this.subscriptions = new Map();
+    this.currentSubscription = null;
+    this.currentGroupId = null;
     this.connectPromise = null;
   }
 
@@ -12,14 +13,11 @@ class SocketService {
     if (this.client?.connected) {
       return Promise.resolve();
     }
-
     if (this.connectPromise) {
       return this.connectPromise;
     }
 
-    // WebSocket endpoint for real-time chat
     const websocketEndpoint = "http://localhost:8081/ws";
-
     this.client = new Client({
       webSocketFactory: () => new SockJS(websocketEndpoint),
       reconnectDelay: 5000,
@@ -33,21 +31,18 @@ class SocketService {
         this.connectPromise = null;
         resolve();
       };
-
       this.client.onStompError = (frame) => {
-        console.error("SocketService STOMP error", frame);
+        console.error("SocketService: STOMP error", frame);
         this.connectPromise = null;
         reject(new Error(frame.headers?.message || "STOMP connection failed."));
       };
-
       this.client.onWebSocketError = (event) => {
-        console.error("SocketService WebSocket error", event);
+        console.error("SocketService: WebSocket error", event);
         this.connectPromise = null;
         reject(new Error("WebSocket connection failed."));
       };
-
       this.client.onWebSocketClose = (event) => {
-        console.warn("SocketService WebSocket closed", event);
+        console.warn("SocketService: WebSocket closed", event);
       };
     });
 
@@ -56,46 +51,59 @@ class SocketService {
     return this.connectPromise;
   }
 
-  isConnected() {
-    return Boolean(this.client?.connected);
-  }
-
-  subscribeToGroup(groupId, onMessageReceived) {
+  subscribeToGroup(groupId, callback) {
     if (!this.client?.connected) {
+      console.warn("SocketService: Cannot subscribe, client not connected");
       return () => {};
     }
 
-    const normalizedGroupId = String(groupId);
-    const destination = `/topic/chat/${normalizedGroupId}`;
+    // Always refresh the subscription callback. This avoids stale closures in
+    // React StrictMode where effects are mounted/cleaned twice in development.
+    this.unsubscribeFromGroup();
 
-    this.unsubscribeFromGroup(normalizedGroupId);
-
+    const destination = `/topic/chat/${groupId}`;
     const subscription = this.client.subscribe(destination, (frame) => {
+      let payload;
       try {
-        const payload = JSON.parse(frame.body);
-        onMessageReceived(payload);
-      } catch (error) {
-        onMessageReceived({
-          sender: "Unknown",
-          content: frame.body,
-          groupId: normalizedGroupId,
-          timestamp: new Date().toISOString(),
-          roles: "USER"
-        });
+        payload = JSON.parse(frame.body);
+      } catch {
+        payload = { content: frame.body };
       }
+      console.log("SocketService: MESSAGE RECEIVED:", payload);
+      callback(payload);
     });
+    this.currentSubscription = subscription;
+    this.currentGroupId = groupId;
+    console.log("SocketService: Successfully subscribed to", destination);
 
-    console.log(`SocketService: subscribed to group ${normalizedGroupId}`);
-    this.subscriptions.set(normalizedGroupId, subscription);
-    return () => this.unsubscribeFromGroup(normalizedGroupId);
+    return () => {
+      if (this.currentSubscription !== subscription) {
+        return;
+      }
+
+      subscription.unsubscribe();
+      console.log("SocketService: Unsubscribed from", groupId);
+      this.currentSubscription = null;
+      this.currentGroupId = null;
+    };
   }
 
-  unsubscribeFromGroup(groupId) {
-    const subscription = this.subscriptions.get(String(groupId));
-    if (subscription) {
-      subscription.unsubscribe();
-      this.subscriptions.delete(String(groupId));
+  unsubscribeFromGroup() {
+    if (this.currentSubscription) {
+      this.currentSubscription.unsubscribe();
+      console.log("SocketService: Unsubscribed from", this.currentGroupId);
+      this.currentSubscription = null;
+      this.currentGroupId = null;
     }
+  }
+
+  disconnect() {
+    this.unsubscribeFromGroup();
+    if (this.client) {
+      this.client.deactivate();
+      this.client = null;
+    }
+    this.connectPromise = null;
   }
 
   sendMessage(messagePayload) {
@@ -103,28 +111,12 @@ class SocketService {
       console.warn("SocketService: sendMessage blocked, client not connected", messagePayload);
       throw new Error("WebSocket is not connected.");
     }
-
     const sendDestination = "/app/chat_send";
     console.log("SocketService: sending message", sendDestination, messagePayload);
-
     this.client.publish({
       destination: sendDestination,
       body: JSON.stringify(messagePayload)
     });
-  }
-
-  disconnect() {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-    this.subscriptions.clear();
-
-    if (this.client) {
-      this.client.deactivate();
-      this.client = null;
-    }
-
-    this.connectPromise = null;
   }
 }
 

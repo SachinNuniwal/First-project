@@ -1,22 +1,23 @@
 package com.rps.chatting_service.Controller;
 
-import com.rps.chatting_service.Entity.ChatMessage;
-import com.rps.chatting_service.Repository.MessageRepository;
+import com.rps.chatting_service.Service.ChatMessageQueryService;
+import com.rps.chatting_service.dto.MessagePageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin("*")
 public class MessageController {
 
     @Autowired
-    private MessageRepository repo;
+    private ChatMessageQueryService chatMessageQueryService;
 
-    @GetMapping("/all_messages/{groupId}")
-    public List<ChatMessage> getAllMessage(@PathVariable String groupId) {
-        List<ChatMessage>  data=repo.findByGroupId(groupId);
-        return  data;
+    @GetMapping("/messages/{groupId}")
+    public MessagePageResponse getMessages(
+            @PathVariable String groupId,
+            @RequestParam(defaultValue = "20") int limit,
+            @RequestParam(required = false) Long cursor
+    ) {
+        return chatMessageQueryService.getMessages(groupId, limit, cursor);
     }
 }

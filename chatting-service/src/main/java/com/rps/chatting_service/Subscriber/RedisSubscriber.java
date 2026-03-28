@@ -6,13 +6,15 @@ import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class RedisSubscriber implements MessageListener {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    private ObjectMapper objectMapper;
 //
 //    @Override
 //    public void onMessage(Message message, byte[] pattern) {
@@ -37,8 +39,7 @@ public class RedisSubscriber implements MessageListener {
         try {
             String json = new String(message.getBody());
 
-            ObjectMapper mapper = new ObjectMapper();
-            ChatMessage msg = mapper.readValue(json, ChatMessage.class);
+            ChatMessage msg = objectMapper.readValue(json, ChatMessage.class);
 
             messagingTemplate.convertAndSend(
                     "/topic/chat/" + msg.getGroupId(),

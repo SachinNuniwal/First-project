@@ -2,9 +2,18 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ChatWindow from "./components/ChatWindow";
 import GroupsList from "./components/GroupsList";
 import Login from "./components/Login";
-import { fetchGroupMessages, fetchUserGroups, validateUserId } from "./services/api";
+import {
+  fetchGroupMessages,
+  fetchUserGroups,
+  validateUserId
+} from "./services/api";
 import { socketService } from "./services/socketService";
-import { getGroupId, normalizeMessage } from "./utils/chatHelpers";
+import {
+  getGroupId,
+  normalizeMessage,
+  mergeIncomingMessage,
+  mergeOlderMessages
+} from "./utils/chatHelpers";
 
 function useIsMobile(breakpoint = 960) {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= breakpoint);
@@ -26,6 +35,10 @@ function App() {
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [cursor, setCursor] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingOlder, setIsLoadingOlder] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(true);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [isLoadingGroups, setIsLoadingGroups] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
@@ -128,6 +141,8 @@ function App() {
   useEffect(() => {
     if (!selectedGroupId) {
       setMessages([]);
+      setCursor(null);
+      setHasMore(true);
       return;
     }
 
@@ -135,11 +150,21 @@ function App() {
 
     async function loadMessages() {
       setIsLoadingMessages(true);
+      setCursor(null);
+      setHasMore(true);
+
       try {
-        const groupMessages = await fetchGroupMessages(selectedGroupId);
-        if (isActive) {
-          setMessages(groupMessages);
+        const { messages: groupMessages, cursor: newCursor, hasMore: newHasMore } =
+          await fetchGroupMessages(selectedGroupId, null, 20);
+
+        if (!isActive) {
+          return;
         }
+
+        setMessages(groupMessages);
+        setCursor(newCursor);
+        setHasMore(Boolean(newHasMore));
+        setIsAtBottom(true);
       } catch (error) {
         if (isActive) {
           setAppError(error.message || "Could not load messages.");
@@ -161,11 +186,20 @@ function App() {
   // Subscribe to group messages when group is selected and socket is connected
   useEffect(() => {
     if (!selectedGroupId || !isSocketConnected) {
-      return undefined;
+      return () => {};
     }
 
+    let isMounted = true;
+
     const unsubscribe = socketService.subscribeToGroup(selectedGroupId, (incomingMessage) => {
+      if (!isMounted) return;
+
       const normalized = normalizeMessage(incomingMessage, selectedGroupId);
+      console.log("[ChatWindow] Received message:", {
+        sender: normalized.sender,
+        content: normalized.content,
+        groupId: normalized.groupId
+      });
 
       setMessages((previousMessages) => {
         // If this is a message we sent and the server echoed back clientMessageId,
@@ -174,38 +208,17 @@ function App() {
           normalized.clientMessageId &&
           pendingClientMessageIdsRef.current.has(normalized.clientMessageId)
         ) {
+          console.log("[ChatWindow] Replacing optimistic message:", normalized.clientMessageId);
           pendingClientMessageIdsRef.current.delete(normalized.clientMessageId);
-
-          return previousMessages.map((item) =>
-            item.clientMessageId === normalized.clientMessageId ? normalized : item
-          );
+          return mergeIncomingMessage(previousMessages, normalized);
         }
 
-        const exists = previousMessages.some((item) => {
-          if (item.id && normalized.id && item.id === normalized.id) {
-            return true;
-          }
-
-          if (
-            item.sender === normalized.sender &&
-            item.content === normalized.content &&
-            item.groupId === normalized.groupId
-          ) {
-            const existingTs = new Date(item.timestamp).getTime();
-            const incomingTs = new Date(normalized.timestamp).getTime();
-            if (!Number.isNaN(existingTs) && !Number.isNaN(incomingTs) && Math.abs(existingTs - incomingTs) < 5000) {
-              return true;
-            }
-          }
-
-          return false;
-        });
-
-        return exists ? previousMessages : [...previousMessages, normalized];
+        return mergeIncomingMessage(previousMessages, normalized);
       });
     });
 
     return () => {
+      isMounted = false;
       unsubscribe?.();
     };
   }, [selectedGroupId, isSocketConnected]);
@@ -222,6 +235,33 @@ function App() {
     setIsSocketConnected(false);
   }
 
+  async function loadOlderMessages() {
+    if (!selectedGroupId || isLoadingOlder || !hasMore) {
+      return;
+    }
+
+    setIsLoadingOlder(true);
+    setAppError("");
+
+    try {
+      const { messages: olderMessages, cursor: newCursor, hasMore: newHasMore } =
+        await fetchGroupMessages(selectedGroupId, cursor, 20);
+
+      if (!olderMessages || olderMessages.length === 0) {
+        setHasMore(false);
+        return;
+      }
+
+      setMessages((prevMessages) => mergeOlderMessages(prevMessages, olderMessages));
+      setCursor(newCursor);
+      setHasMore(Boolean(newHasMore));
+    } catch (error) {
+      setAppError(error.message || "Could not load older messages.");
+    } finally {
+      setIsLoadingOlder(false);
+    }
+  }
+
   function handleGroupSelection(group) {
     setSelectedGroup(group);
     if (isMobile) {
@@ -235,6 +275,7 @@ function App() {
 
   function handleSendMessage(content) {
     if (!currentUserId || !selectedGroupId) {
+      console.warn("[handleSendMessage] Missing userId or groupId");
       return;
     }
 
@@ -258,24 +299,28 @@ function App() {
       clientMessageId
     };
 
+    console.log("[handleSendMessage] Sending message:", {
+      sender: currentUserId,
+      groupId: selectedGroupId,
+      contentPreview: content.substring(0, 50) + "...",
+      clientMessageId
+    });
+
     try {
       pendingClientMessageIdsRef.current.add(clientMessageId);
       socketService.sendMessage(outgoingMessage);
       const normalizedOutgoing = normalizeMessage({
         ...outgoingMessage,
         timestamp: new Date().toISOString()
-      }, selectedGroupId); // local optimistic timestamp only (not sent to backend)
+      }, selectedGroupId);
 
-      setMessages((previousMessages) => {
-        const exists = previousMessages.some((item) => item.id === normalizedOutgoing.id);
-        if (exists) {
-          return previousMessages;
-        }
-        return [...previousMessages, normalizedOutgoing];
-      });
+      console.log("[handleSendMessage] Added optimistic message:", normalizedOutgoing.id);
+
+      setMessages((previousMessages) => mergeIncomingMessage(previousMessages, normalizedOutgoing));
     } catch (error) {
       pendingClientMessageIdsRef.current.delete(clientMessageId);
       setAppError(error.message || "Message send failed. Check socket connection.");
+      console.error("[handleSendMessage] Error:", error);
     }
   }
 
@@ -307,7 +352,12 @@ function App() {
             group={selectedGroup}
             messages={messages}
             isLoadingMessages={isLoadingMessages}
+            isLoadingOlder={isLoadingOlder}
+            hasMore={hasMore}
             isSocketConnected={isSocketConnected}
+            isAtBottom={isAtBottom}
+            onAtBottomChange={setIsAtBottom}
+            onLoadOlder={loadOlderMessages}
             showBackButton={isMobile && !showGroupsOnMobile}
             onBack={handleBackToGroups}
             onSendMessage={handleSendMessage}

@@ -7,8 +7,8 @@ const validateUserEndpointBase = "http://localhost:8080/group_member/check_user_
 // TODO: Replace with backend API endpoint to fetch groups for user
 const getGroupsEndpoint = "http://localhost:8080/group/by_id";
 
-// Backend endpoint to fetch messages for a group
-const getMessagesEndpoint = "http://localhost:8081/all_messages/{groupId}";
+// Backend endpoint to fetch messages for a group (cursor-based pagination)
+const getMessagesEndpoint = "http://localhost:8081/messages/{groupId}";
 
 async function safeParseJson(response) {
   const text = await response.text();
@@ -21,6 +21,39 @@ async function safeParseJson(response) {
   } catch (error) {
     return null;
   }
+}
+
+function toEpochCursor(value) {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) {
+      return null;
+    }
+    return value < 1_000_000_000_000 ? Math.trunc(value * 1000) : Math.trunc(value);
+  }
+
+  const text = String(value).trim();
+  if (!text) {
+    return null;
+  }
+
+  if (/^\d+$/.test(text)) {
+    const numeric = Number(text);
+    if (!Number.isFinite(numeric)) {
+      return null;
+    }
+    return numeric < 1_000_000_000_000 ? Math.trunc(numeric * 1000) : Math.trunc(numeric);
+  }
+
+  const parsedMs = new Date(text).getTime();
+  if (!Number.isNaN(parsedMs)) {
+    return parsedMs;
+  }
+
+  return null;
 }
 
 // export async function validateUserId(userId) {
@@ -141,10 +174,16 @@ export async function fetchUserGroups(userId) {
   });
 }
 
-export async function fetchGroupMessages(groupId) {
+export async function fetchGroupMessages(groupId, cursor = null, limit = 20) {
   const endpoint = getMessagesEndpoint.replace("{groupId}", encodeURIComponent(groupId));
+  const url = new URL(endpoint);
+  url.searchParams.set("limit", String(limit));
+  const requestCursor = toEpochCursor(cursor);
+  if (requestCursor !== null) {
+    url.searchParams.set("cursor", String(requestCursor));
+  }
 
-  const response = await fetch(endpoint, {
+  const response = await fetch(url.toString(), {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
@@ -156,7 +195,29 @@ export async function fetchGroupMessages(groupId) {
   }
 
   const data = await safeParseJson(response);
-  const items = Array.isArray(data) ? data : Array.isArray(data?.messages) ? data.messages : [];
-  return items.map((message) => normalizeMessage(message, groupId));
-}
+  const items = Array.isArray(data)
+    ? data
+    : Array.isArray(data?.messages)
+    ? data.messages
+    : [];
 
+  const normalized = items.map((message) => normalizeMessage(message, groupId));
+
+  const sorted = normalized.slice().sort((a, b) => {
+    const ta = new Date(a.timestamp).getTime();
+    const tb = new Date(b.timestamp).getTime();
+    return ta - tb;
+  });
+
+  const oldestCandidate = sorted.length > 0 ? sorted[0] : null;
+  const cursorFromServer = toEpochCursor(data?.nextCursor ?? data?.cursor);
+  const cursorFromOldestMessage = oldestCandidate ? toEpochCursor(oldestCandidate.timestamp) : null;
+  const currentCursor = cursorFromServer ?? cursorFromOldestMessage ?? requestCursor;
+  const hasMoreFromServer = typeof data?.hasMore === "boolean" ? data.hasMore : sorted.length === limit;
+
+  return {
+    messages: sorted,
+    cursor: currentCursor,
+    hasMore: hasMoreFromServer
+  };
+}

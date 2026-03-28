@@ -15,14 +15,47 @@ function ChatWindow({
   isSocketConnected,
   onBack,
   showBackButton,
-  onSendMessage
+  onSendMessage,
+  onLoadOlder,
+  onAtBottomChange,
+  isLoadingOlder,
+  hasMore,
+  isAtBottom
 }) {
   const [draftMessage, setDraftMessage] = useState("");
   const endOfMessagesRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const isPrependingRef = useRef(false);
+  const previousScrollHeightRef = useRef(0);
 
   useEffect(() => {
-    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, group]);
+    if (isLoadingOlder) {
+      return;
+    }
+
+    const container = messagesContainerRef.current;
+    const endElement = endOfMessagesRef.current;
+    if (!container || !endElement) {
+      return;
+    }
+
+    if (isPrependingRef.current) {
+      requestAnimationFrame(() => {
+        const oldHeight = previousScrollHeightRef.current;
+        const newHeight = container.scrollHeight;
+        const newScrollTop = newHeight - oldHeight;
+        container.scrollTop = newScrollTop;
+      });
+      isPrependingRef.current = false;
+      return;
+    }
+
+    if (isAtBottom || messages.length === 0) {
+      requestAnimationFrame(() => {
+        endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+  }, [messages, isAtBottom, isLoadingOlder]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -34,6 +67,26 @@ function ChatWindow({
     onSendMessage(content);
     setDraftMessage("");
   }
+
+  function handleScroll() {
+    const container = messagesContainerRef.current;
+    if (!container) {
+      return;
+    }
+
+    const isAtBottomNow =
+      container.scrollHeight - container.scrollTop - container.clientHeight <= 50;
+
+    onAtBottomChange(Boolean(isAtBottomNow));
+
+    if (container.scrollTop < 50 && hasMore && !isLoadingOlder) {
+      const previousHeight = container.scrollHeight;
+      previousScrollHeightRef.current = previousHeight;
+      isPrependingRef.current = true;
+      onLoadOlder();
+    }
+  }
+
 
   if (!group) {
     return (
@@ -71,8 +124,9 @@ function ChatWindow({
         </span>
       </header>
 
-      <div className="messages-scroll">
+      <div className="messages-scroll" ref={messagesContainerRef} onScroll={handleScroll}>
         {isLoadingMessages ? <p className="state-text">Loading messages...</p> : null}
+        {isLoadingOlder ? <p className="state-text">Loading older messages...</p> : null}
 
         {!isLoadingMessages &&
           messages.map((message) => {
