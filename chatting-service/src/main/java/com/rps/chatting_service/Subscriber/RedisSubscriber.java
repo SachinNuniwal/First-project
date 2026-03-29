@@ -15,23 +15,6 @@ public class RedisSubscriber implements MessageListener {
     private SimpMessagingTemplate messagingTemplate;
     @Autowired
     private ObjectMapper objectMapper;
-//
-//    @Override
-//    public void onMessage(Message message, byte[] pattern) {
-//
-//        try {
-//            ObjectMapper mapper = new ObjectMapper();
-//            ChatMessage msg = mapper.readValue(message.getBody(), ChatMessage.class);
-//
-//            messagingTemplate.convertAndSend(
-//                    "/topic/chat/" + msg.getGroupId(),
-//                    msg
-//            );
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
