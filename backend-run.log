@@ -1,0 +1,1422 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< com.role:RpsHod >---------------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.2.0:run (default-cli) > test-compile @ RpsHod >>>
+[WARNING] The artifact mysql:mysql-connector-java:jar:8.0.33 has been relocated to com.mysql:mysql-connector-j:jar:8.0.33: MySQL Connector/J artifacts moved to reverse-DNS compliant Maven 2+ coordinates.
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ RpsHod ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ RpsHod ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ RpsHod ---
+[INFO] skip non existing resourceDirectory D:\projects\Rps-campus-pro\TOP_PROJECT\RpsHod\RpsHod\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ RpsHod ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] <<< spring-boot:3.2.0:run (default-cli) < test-compile @ RpsHod <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.2.0:run (default-cli) @ RpsHod ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-04-07T10:21:47.069+05:30  INFO 6992 --- [RpsHod] [           main] com.role.RpsHod.RpsHodApplication        : Starting RpsHodApplication using Java 25.0.2 with PID 6992 (D:\projects\Rps-campus-pro\TOP_PROJECT\RpsHod\RpsHod\target\classes started by sachu in D:\projects\Rps-campus-pro\TOP_PROJECT\RpsHod\RpsHod)
+2026-04-07T10:21:47.078+05:30  INFO 6992 --- [RpsHod] [           main] com.role.RpsHod.RpsHodApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-04-07T10:21:50.864+05:30  INFO 6992 --- [RpsHod] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-07T10:21:51.531+05:30  INFO 6992 --- [RpsHod] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 632 ms. Found 5 JPA repository interfaces.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.apache.tomcat.jni.Library in an unnamed module (file:/C:/Users/sachu/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.16/tomcat-embed-core-10.1.16.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-04-07T10:21:55.126+05:30  INFO 6992 --- [RpsHod] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-04-07T10:21:55.162+05:30  INFO 6992 --- [RpsHod] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-07T10:21:55.164+05:30  INFO 6992 --- [RpsHod] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-07T10:21:55.388+05:30  INFO 6992 --- [RpsHod] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-04-07T10:21:55.389+05:30  INFO 6992 --- [RpsHod] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8158 ms
+2026-04-07T10:21:55.828+05:30  INFO 6992 --- [RpsHod] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-07T10:21:56.052+05:30  INFO 6992 --- [RpsHod] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-07T10:21:56.233+05:30  INFO 6992 --- [RpsHod] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-04-07T10:21:57.229+05:30  INFO 6992 --- [RpsHod] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-07T10:21:57.308+05:30  INFO 6992 --- [RpsHod] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-07T10:21:57.906+05:30  INFO 6992 --- [RpsHod] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:hoddatabase user=SA
+2026-04-07T10:21:57.909+05:30  INFO 6992 --- [RpsHod] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-07T10:21:57.992+05:30  WARN 6992 --- [RpsHod] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-07T10:22:02.593+05:30  INFO 6992 --- [RpsHod] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-07T10:22:02.987+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    create table chat_group (
+        id bigint generated by default as identity,
+        created_at timestamp(6),
+        name varchar(255),
+        primary key (id)
+    )
+Hibernate: 
+    create table chat_group (
+        id bigint generated by default as identity,
+        created_at timestamp(6),
+        name varchar(255),
+        primary key (id)
+    )
+2026-04-07T10:22:03.134+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    create table class_entity_subjects (
+        class_entity_id bigint not null,
+        subjects varchar(255)
+    )
+Hibernate: 
+    create table class_entity_subjects (
+        class_entity_id bigint not null,
+        subjects varchar(255)
+    )
+2026-04-07T10:22:03.148+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    create table classes (
+        id bigint generated by default as identity,
+        attendance integer,
+        cgpa float(53),
+        color varchar(255),
+        name varchar(255) not null,
+        students integer,
+        teacher varchar(255),
+        class_year varchar(255),
+        primary key (id)
+    )
+Hibernate: 
+    create table classes (
+        id bigint generated by default as identity,
+        attendance integer,
+        cgpa float(53),
+        color varchar(255),
+        name varchar(255) not null,
+        students integer,
+        teacher varchar(255),
+        class_year varchar(255),
+        primary key (id)
+    )
+2026-04-07T10:22:03.165+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    create table group_members (
+        id bigint generated by default as identity,
+        group_name varchar(255),
+        joined_at timestamp(6),
+        role varchar(255) check (role in ('STUDENT','TEACHER','HOD')),
+        user_id varchar(255),
+        group_id bigint not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table group_members (
+        id bigint generated by default as identity,
+        group_name varchar(255),
+        joined_at timestamp(6),
+        role varchar(255) check (role in ('STUDENT','TEACHER','HOD')),
+        user_id varchar(255),
+        group_id bigint not null,
+        primary key (id)
+    )
+2026-04-07T10:22:03.186+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    create table students (
+        id bigint generated by default as identity,
+        attendance integer,
+        cgpa float(53),
+        class_name varchar(255) not null,
+        course varchar(255),
+        duration integer,
+        paid integer,
+        total integer,
+        gender varchar(255),
+        name varchar(255) not null,
+        student_id varchar(255) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table students (
+        id bigint generated by default as identity,
+        attendance integer,
+        cgpa float(53),
+        class_name varchar(255) not null,
+        course varchar(255),
+        duration integer,
+        paid integer,
+        total integer,
+        gender varchar(255),
+        name varchar(255) not null,
+        student_id varchar(255) not null,
+        primary key (id)
+    )
+2026-04-07T10:22:03.196+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    create table teacher_classes (
+        teacher_id bigint not null,
+        classes varchar(255)
+    )
+Hibernate: 
+    create table teacher_classes (
+        teacher_id bigint not null,
+        classes varchar(255)
+    )
+2026-04-07T10:22:03.202+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    create table teacher_subjects (
+        teacher_id bigint not null,
+        subjects varchar(255)
+    )
+Hibernate: 
+    create table teacher_subjects (
+        teacher_id bigint not null,
+        subjects varchar(255)
+    )
+2026-04-07T10:22:03.209+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    create table teachers (
+        id bigint generated by default as identity,
+        dept varchar(255) not null,
+        designation varchar(255),
+        email varchar(255),
+        exp varchar(255),
+        leaves_used integer,
+        name varchar(255) not null,
+        status varchar(255),
+        teacher_id varchar(255) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table teachers (
+        id bigint generated by default as identity,
+        dept varchar(255) not null,
+        designation varchar(255),
+        email varchar(255),
+        exp varchar(255),
+        leaves_used integer,
+        name varchar(255) not null,
+        status varchar(255),
+        teacher_id varchar(255) not null,
+        primary key (id)
+    )
+2026-04-07T10:22:03.223+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists classes 
+       drop constraint if exists UK_pgs3gcxax70h9jugbt24ugwcg
+Hibernate: 
+    alter table if exists classes 
+       drop constraint if exists UK_pgs3gcxax70h9jugbt24ugwcg
+2026-04-07T10:22:03.232+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists classes 
+       add constraint UK_pgs3gcxax70h9jugbt24ugwcg unique (name)
+Hibernate: 
+    alter table if exists classes 
+       add constraint UK_pgs3gcxax70h9jugbt24ugwcg unique (name)
+2026-04-07T10:22:03.249+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists group_members 
+       drop constraint if exists UKsdnr5geqobllaqta70d27sw3x
+Hibernate: 
+    alter table if exists group_members 
+       drop constraint if exists UKsdnr5geqobllaqta70d27sw3x
+2026-04-07T10:22:03.249+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists group_members 
+       add constraint UKsdnr5geqobllaqta70d27sw3x unique (group_id, user_id, role)
+Hibernate: 
+    alter table if exists group_members 
+       add constraint UKsdnr5geqobllaqta70d27sw3x unique (group_id, user_id, role)
+2026-04-07T10:22:03.258+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists students 
+       drop constraint if exists UK_5mbus2m1tm2acucrp6t627jmx
+Hibernate: 
+    alter table if exists students 
+       drop constraint if exists UK_5mbus2m1tm2acucrp6t627jmx
+2026-04-07T10:22:03.264+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists students 
+       add constraint UK_5mbus2m1tm2acucrp6t627jmx unique (student_id)
+Hibernate: 
+    alter table if exists students 
+       add constraint UK_5mbus2m1tm2acucrp6t627jmx unique (student_id)
+2026-04-07T10:22:03.273+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists teachers 
+       drop constraint if exists UK_7knr046ecq8hwte27psac5dxe
+Hibernate: 
+    alter table if exists teachers 
+       drop constraint if exists UK_7knr046ecq8hwte27psac5dxe
+2026-04-07T10:22:03.275+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists teachers 
+       add constraint UK_7knr046ecq8hwte27psac5dxe unique (teacher_id)
+Hibernate: 
+    alter table if exists teachers 
+       add constraint UK_7knr046ecq8hwte27psac5dxe unique (teacher_id)
+2026-04-07T10:22:03.281+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists class_entity_subjects 
+       add constraint FKp35mqt4ruord3uswuncw1v2b1 
+       foreign key (class_entity_id) 
+       references classes
+Hibernate: 
+    alter table if exists class_entity_subjects 
+       add constraint FKp35mqt4ruord3uswuncw1v2b1 
+       foreign key (class_entity_id) 
+       references classes
+2026-04-07T10:22:03.309+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists group_members 
+       add constraint FKtgvs0sjmj4k7s4xn3u8bk4joe 
+       foreign key (group_id) 
+       references chat_group
+Hibernate: 
+    alter table if exists group_members 
+       add constraint FKtgvs0sjmj4k7s4xn3u8bk4joe 
+       foreign key (group_id) 
+       references chat_group
+2026-04-07T10:22:03.313+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists teacher_classes 
+       add constraint FKtfqjapwyb01dh5kb7dcx00p0p 
+       foreign key (teacher_id) 
+       references teachers
+Hibernate: 
+    alter table if exists teacher_classes 
+       add constraint FKtfqjapwyb01dh5kb7dcx00p0p 
+       foreign key (teacher_id) 
+       references teachers
+2026-04-07T10:22:03.318+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    alter table if exists teacher_subjects 
+       add constraint FK6dcl3ihufp4v0j1fuxlw4ksoj 
+       foreign key (teacher_id) 
+       references teachers
+Hibernate: 
+    alter table if exists teacher_subjects 
+       add constraint FK6dcl3ihufp4v0j1fuxlw4ksoj 
+       foreign key (teacher_id) 
+       references teachers
+2026-04-07T10:22:03.340+05:30  INFO 6992 --- [RpsHod] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by io.netty.util.internal.PlatformDependent0$4 (file:/C:/Users/sachu/.m2/repository/io/netty/netty-common/4.1.101.Final/netty-common-4.1.101.Final.jar)
+WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$4
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+2026-04-07T10:22:06.993+05:30  WARN 6992 --- [RpsHod] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-07T10:22:07.940+05:30  INFO 6992 --- [RpsHod] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2026-04-07T10:22:07.954+05:30  INFO 6992 --- [RpsHod] [           main] com.role.RpsHod.RpsHodApplication        : Started RpsHodApplication in 22.157 seconds (process running for 23.451)
+2026-04-07T10:22:08.199+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.dept,
+        t1_0.designation,
+        t1_0.email,
+        t1_0.exp,
+        t1_0.leaves_used,
+        t1_0.name,
+        t1_0.status,
+        t1_0.teacher_id 
+    from
+        teachers t1_0
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.dept,
+        t1_0.designation,
+        t1_0.email,
+        t1_0.exp,
+        t1_0.leaves_used,
+        t1_0.name,
+        t1_0.status,
+        t1_0.teacher_id 
+    from
+        teachers t1_0
+2026-04-07T10:22:08.273+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.322+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.323+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.327+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.328+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.331+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.333+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.334+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.335+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.336+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.338+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.340+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.341+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.342+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.343+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.346+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.347+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.348+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.349+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.349+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.352+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        teachers
+        (dept, designation, email, exp, leaves_used, name, status, teacher_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.354+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.355+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_classes
+        (teacher_id, classes) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.356+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.357+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        teacher_subjects
+        (teacher_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.367+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    select
+        s1_0.id,
+        s1_0.attendance,
+        s1_0.cgpa,
+        s1_0.class_name,
+        s1_0.course,
+        s1_0.duration,
+        s1_0.paid,
+        s1_0.total,
+        s1_0.gender,
+        s1_0.name,
+        s1_0.student_id 
+    from
+        students s1_0
+Hibernate: 
+    select
+        s1_0.id,
+        s1_0.attendance,
+        s1_0.cgpa,
+        s1_0.class_name,
+        s1_0.course,
+        s1_0.duration,
+        s1_0.paid,
+        s1_0.total,
+        s1_0.gender,
+        s1_0.name,
+        s1_0.student_id 
+    from
+        students s1_0
+2026-04-07T10:22:08.373+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.377+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.379+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.383+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.385+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.389+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.392+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.395+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.398+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.400+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        students
+        (attendance, cgpa, class_name, course, duration, paid, total, gender, name, student_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.407+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    select
+        ce1_0.id,
+        ce1_0.attendance,
+        ce1_0.cgpa,
+        ce1_0.color,
+        ce1_0.name,
+        ce1_0.students,
+        ce1_0.teacher,
+        ce1_0.class_year 
+    from
+        classes ce1_0
+Hibernate: 
+    select
+        ce1_0.id,
+        ce1_0.attendance,
+        ce1_0.cgpa,
+        ce1_0.color,
+        ce1_0.name,
+        ce1_0.students,
+        ce1_0.teacher,
+        ce1_0.class_year 
+    from
+        classes ce1_0
+2026-04-07T10:22:08.412+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.415+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.417+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.418+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.419+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.421+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.424+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.426+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.427+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.429+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.429+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.432+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.433+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.434+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.436+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.437+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.439+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.441+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.442+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.442+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.444+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.446+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        classes
+        (attendance, cgpa, color, name, students, teacher, class_year, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+2026-04-07T10:22:08.449+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.451+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:08.452+05:30 DEBUG 6992 --- [RpsHod] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        class_entity_subjects
+        (class_entity_id, subjects) 
+    values
+        (?, ?)
+2026-04-07T10:22:52.325+05:30  INFO 6992 --- [RpsHod] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-07T10:22:52.325+05:30  INFO 6992 --- [RpsHod] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-07T10:22:52.334+05:30  INFO 6992 --- [RpsHod] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2026-04-07T10:22:52.446+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.dept,
+        t1_0.designation,
+        t1_0.email,
+        t1_0.exp,
+        t1_0.leaves_used,
+        t1_0.name,
+        t1_0.status,
+        t1_0.teacher_id 
+    from
+        teachers t1_0
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.dept,
+        t1_0.designation,
+        t1_0.email,
+        t1_0.exp,
+        t1_0.leaves_used,
+        t1_0.name,
+        t1_0.status,
+        t1_0.teacher_id 
+    from
+        teachers t1_0
+2026-04-07T10:22:52.741+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+Hibernate: 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+2026-04-07T10:22:52.751+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+Hibernate: 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+2026-04-07T10:22:52.751+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+Hibernate: 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+2026-04-07T10:22:52.756+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+Hibernate: 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+2026-04-07T10:22:52.760+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+Hibernate: 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+2026-04-07T10:22:52.766+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+Hibernate: 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+2026-04-07T10:22:52.766+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+Hibernate: 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+2026-04-07T10:22:52.766+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+Hibernate: 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+2026-04-07T10:22:52.766+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+Hibernate: 
+    select
+        s1_0.teacher_id,
+        s1_0.subjects 
+    from
+        teacher_subjects s1_0 
+    where
+        s1_0.teacher_id=?
+2026-04-07T10:22:52.774+05:30 DEBUG 6992 --- [RpsHod] [nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+Hibernate: 
+    select
+        c1_0.teacher_id,
+        c1_0.classes 
+    from
+        teacher_classes c1_0 
+    where
+        c1_0.teacher_id=?
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  05:29 min
+[INFO] Finished at: 2026-04-07T10:27:04+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.2.0:run (default-cli) on project RpsHod: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
