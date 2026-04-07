@@ -1,0 +1,51 @@
+Message Entity Structure
+ChatMessage is a simple JPA entity with scalar fields only: id, groupId, sender, content, timestamp, roles. There are no JPA relationships to Group or User (no @ManyToOne, etc.), so group/user are represented as raw strings.
+Reference: /C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Entity/ChatMessage.java
+
+Repository Layer
+The repository declares three finder methods, all returning List<ChatMessage> and none accepting Pageable. There is no pagination query.
+Reference: /C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Repository/MessageRepository.java
+
+Redis Usage
+Redis is used only as pub/sub. Messages are published to the chat-channel topic, and a RedisMessageListenerContainer listens on the same topic. There is no Redis structure used for caching messages (no List/ZSet/String operations).
+Key naming pattern: single topic chat-channel.
+TTL: none configured.
+Serialization: String JSON using RedisTemplate<String, String> plus manual Jackson serialization/deserialization.
+References:
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Controller/ChatController.java
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Config/RedisConfig.java
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Subscriber/RedisSubscriber.java
+
+WebSocket Flow
+Inbound: clients send STOMP messages to /app/chat_send (from @MessageMapping("/chat_send")). The server persists to DB, serializes to JSON, and publishes to Redis.
+Outbound: Redis subscriber receives JSON, deserializes to ChatMessage, and broadcasts to /topic/chat/{groupId} via SimpMessagingTemplate.
+Redis is updated on every message publish, but only via pub/sub (no cache write).
+References:
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Config/WebSocketConfig.java
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Controller/ChatController.java
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Subscriber/RedisSubscriber.java
+
+Current Message Fetch API
+Endpoint: GET /all_messages/{groupId}
+Params: path param groupId only
+Response: raw List<ChatMessage> (no paging metadata)
+Reference: /C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Controller/MessageController.java
+
+Problems / Missing Parts
+Pagination is missing entirely in the API and repository. There is no Pageable usage or limit/offset.
+Redis caching with TTL (10 minutes) is not implemented; Redis is only used for pub/sub.
+No entity relationships to User or Group, so referential integrity and join queries are not modeled at the JPA level.
+Potential logic issue: checkAuthority returns true for "STUDENT" but the controller throws when checkAuthority is true, which blocks students from sending (likely inverted).
+No cursor-based or timestamp-based pagination endpoint, even though a findByGroupIdAndTimestampGreaterThan method exists and is unused.
+References:
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Repository/MessageRepository.java
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Controller/ChatController.java
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Subscriber/MessageService.java
+
+Performance Issues
+GET /all_messages/{groupId} returns all messages for a group with no pagination, which will degrade as history grows.
+DB queries are unbounded and return whole lists, which can cause memory pressure and slow responses.
+No Redis caching layer for recent messages, so every history fetch hits the DB.
+References:
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Controller/MessageController.java
+/C:/Users/mrsun/OneDrive/Desktop/College/TOP_PROJECT-master/chatting-service/src/main/java/com/rps/chatting_service/Repository/MessageRepository.java
