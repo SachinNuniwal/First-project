@@ -5,6 +5,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import Sidebar from '../components/Sidebar';
 import AnalyticsPage from './AnalyticsPage';
 import Topbar from '../components/Header';
@@ -29,6 +30,7 @@ const PAGE_TITLES = {
 };
 
 export default function AdminDashboard() {
+    const { isDark } = useTheme();
     const routerNavigate = useNavigate();
     const [page, setPage] = useState('dashboard');
     const navigate = (p) => setPage(p);
@@ -240,7 +242,11 @@ export default function AdminDashboard() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#0d1117] text-[#e6edf3] text-[13px]" style={{ fontFamily: 'Inter, sans-serif' }}>
+        <div className="flex min-h-screen text-[13px] transition-colors" style={{ 
+            background: isDark ? "#0d1117" : "#f5f5f5",
+            color: isDark ? "#e6edf3" : "#24292f",
+            fontFamily: 'Inter, sans-serif' 
+        }}>
             <Sidebar
                 activePage={page}
                 onNavigate={navigate}
@@ -270,8 +276,11 @@ export default function AdminDashboard() {
 
             {/* Profile Modal */}
             <Modal open={showProfileModal} onClose={() => setShowProfileModal(false)} title="👤 Edit Profile">
-                <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 cursor-pointer border-2 border-[#30363d] hover:border-cyan-400 transition-all overflow-hidden"
-                    style={{ background: 'linear-gradient(135deg, #f0a500, #ff7b29)' }}
+                <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 cursor-pointer border-2 transition-all overflow-hidden"
+                    style={{ 
+                        background: 'linear-gradient(135deg, #f0a500, #ff7b29)',
+                        borderColor: isDark ? '#30363d' : '#d0d7de'
+                    }}
                     onClick={() => document.getElementById('photoInput').click()}>
                     {profile.photo
                         ? <img src={profile.photo} alt="profile" className="w-full h-full object-cover rounded-full" />

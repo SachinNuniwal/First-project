@@ -56,3 +56,96 @@ input[type="radio"],
 input[type="file"] {
     cursor: pointer !important;
 }
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Theme (Default) */
+:root.dark {
+  color-scheme: dark;
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --bg-hover: #30363d;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-tertiary: #484f58;
+  --border-color: #30363d;
+  --card-bg: #161b22;
+  --card-border: #30363d;
+  --input-bg: #161b22;
+  --input-text: #e6edf3;
+  --input-border: #30363d;
+  --surface-bg: #1c2333;
+  --muted-text: #8b949e;
+  --hover-bg: #21262d;
+}
+
+/* Light Theme */
+:root.light {
+  color-scheme: light;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --bg-tertiary: #eaeef2;
+  --bg-hover: #d0d7de;
+  --text-primary: #24292f;
+  --text-secondary: #57606a;
+  --text-tertiary: #8c959f;
+  --border-color: #d0d7de;
+  --card-bg: #ffffff;
+  --card-border: #d0d7de;
+  --input-bg: #ffffff;
+  --input-text: #24292f;
+  --input-border: #d0d7de;
+  --surface-bg: #f6f8fa;
+  --muted-text: #57606a;
+  --hover-bg: #eaeef2;
+}
+
+:root.light body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+:root.light ::-webkit-scrollbar-track {
+  background: #f6f8fa;
+}
+
+:root.light ::-webkit-scrollbar-thumb {
+  background: #d0d7de;
+  border-radius: 3px;
+}
+
+:root.light ::-webkit-scrollbar-thumb:hover {
+  background: #bcc2cb;
+}
+
+:root.light select option {
+  background: #ffffff;
+  color: #24292f;
+}
+
+/* Apply theme to input fields and selects */
+:root.light input,
+:root.light select,
+:root.light textarea {
+  background: #f6f8fa;
+  color: #24292f;
+  border-color: #d0d7de;
+}
+
+:root.light input:focus,
+:root.light select:focus,
+:root.light textarea:focus {
+  background: #ffffff;
+  border-color: #0969da;
+}

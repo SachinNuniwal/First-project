@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { Card, CardTitle, Badge, Btn, SectionHeader, StatCard, TableWrap, THead, TRow, TD, Modal, ModalFooter, FormGroup, Input, Select, Textarea } from '../components/UI';
+import { useTheme } from '../context/ThemeContext';
 
 // ===== LEAVES PAGE =====
 export function LeavesPage({ pendingLeaves, leaveHistory, onApprove, onReject, showToast }) {
+    const { isDark } = useTheme();
     const [historyFilter, setHistoryFilter] = useState('');
     const teachers = [...new Set(leaveHistory.map(l => l.teacher))];
     const filteredHistory = historyFilter ? leaveHistory.filter(l => l.teacher === historyFilter) : leaveHistory;
+
+    const borderColor = 'var(--border-color)';
+    const secondaryTextColor = 'var(--muted-text)';
+    const selectBgColor = 'var(--input-bg)';
+    const selectBorderColor = 'var(--input-border)';
+    const selectTextColor = 'var(--input-text)';
 
     return (
         <div>
@@ -20,7 +28,7 @@ export function LeavesPage({ pendingLeaves, leaveHistory, onApprove, onReject, s
             <Card className="mb-4">
                 <CardTitle>⏳ Pending Leave Requests</CardTitle>
                 {pendingLeaves.length === 0 ? (
-                    <div className="text-[12px] text-[#8b949e] py-4 text-center">No pending leave requests</div>
+                    <div className="text-[12px] py-4 text-center" style={{ color: secondaryTextColor }}>No pending leave requests</div>
                 ) : (
                     <TableWrap>
                         <THead cols={['Teacher', 'Type', 'From', 'To', 'Days', 'Reason', 'Action']} />
@@ -32,7 +40,7 @@ export function LeavesPage({ pendingLeaves, leaveHistory, onApprove, onReject, s
                                     <TD>{l.from}</TD>
                                     <TD>{l.to}</TD>
                                     <TD>{l.days}</TD>
-                                    <TD className="text-[#8b949e]">{l.reason}</TD>
+                                    <TD style={{ color: secondaryTextColor }}>{l.reason}</TD>
                                     <TD>
                                         <div className="flex gap-1">
                                             <Btn variant="success" size="xs" onClick={() => onApprove(l.id)}>✓ Approve</Btn>
@@ -52,7 +60,8 @@ export function LeavesPage({ pendingLeaves, leaveHistory, onApprove, onReject, s
                     <select
                         value={historyFilter}
                         onChange={e => setHistoryFilter(e.target.value)}
-                        className="bg-[#161b22] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-1.5 text-[12px] outline-none"
+                        className="rounded-lg px-3 py-1.5 text-[12px] outline-none"
+                        style={{ backgroundColor: selectBgColor, border: `1px solid ${selectBorderColor}`, color: selectTextColor }}
                     >
                         <option value="">All Teachers</option>
                         {teachers.map(t => <option key={t}>{t}</option>)}
@@ -69,7 +78,7 @@ export function LeavesPage({ pendingLeaves, leaveHistory, onApprove, onReject, s
                                 <TD>{l.to}</TD>
                                 <TD>{l.days}</TD>
                                 <TD><Badge color={l.status === 'Approved' ? 'green' : 'red'}>{l.status}</Badge></TD>
-                                <TD className="text-[#8b949e]">{l.approvedBy}</TD>
+                                <TD style={{ color: secondaryTextColor }}>{l.approvedBy}</TD>
                                 <TD><Btn variant="outline" size="xs" onClick={() => showToast('Leave record viewed')}>View</Btn></TD>
                             </TRow>
                         ))}
@@ -82,6 +91,7 @@ export function LeavesPage({ pendingLeaves, leaveHistory, onApprove, onReject, s
 
 // ===== NOTICES PAGE =====
 export function NoticesPage({ notices, onPost, onDelete, showToast }) {
+    const { isDark } = useTheme();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [target, setTarget] = useState('All');
@@ -90,6 +100,12 @@ export function NoticesPage({ notices, onPost, onDelete, showToast }) {
 
     const audiences = ['All', 'Students Only', 'Teachers Only', 'CSE-3A', 'CSE-3B', 'CSE-2A', 'MCA-1', 'Teachers Group'];
     const filtered = filter ? notices.filter(n => n.target === filter || n.target === 'All') : notices;
+
+    const borderColor = 'var(--border-color)';
+    const secondaryTextColor = 'var(--muted-text)';
+    const selectBgColor = 'var(--input-bg)';
+    const selectBorderColor = 'var(--input-border)';
+    const selectTextColor = 'var(--input-text)';
 
     const handlePost = () => {
         if (!title.trim() || !content.trim()) { showToast('⚠️ Fill in all fields!'); return; }
@@ -118,10 +134,8 @@ export function NoticesPage({ notices, onPost, onDelete, showToast }) {
                                 <button
                                     key={a}
                                     onClick={() => setTarget(a)}
-                                    className={`px-2.5 py-1 rounded-full text-[11px] border transition-all ${target === a
-                                            ? 'bg-cyan-400/15 border-cyan-400 text-cyan-400'
-                                            : 'border-[#30363d] text-[#8b949e] hover:border-cyan-400/50'
-                                        }`}
+                                    className={`px-2.5 py-1 rounded-full text-[11px] border transition-all ${target === a ? 'bg-cyan-400/15 border-cyan-400 text-cyan-400' : 'hover:border-cyan-400/50'}`}
+                                    style={target === a ? undefined : { borderColor: borderColor, color: secondaryTextColor }}
                                 >
                                     {a}
                                 </button>
@@ -144,7 +158,8 @@ export function NoticesPage({ notices, onPost, onDelete, showToast }) {
                         <select
                             value={filter}
                             onChange={e => setFilter(e.target.value)}
-                            className="bg-[#161b22] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-1.5 text-[12px] outline-none"
+                            className="rounded-lg px-3 py-1.5 text-[12px] outline-none"
+                            style={{ backgroundColor: selectBgColor, border: `1px solid ${selectBorderColor}`, color: selectTextColor }}
                         >
                             <option value="">All Audiences</option>
                             {audiences.map(a => <option key={a}>{a}</option>)}
@@ -152,19 +167,19 @@ export function NoticesPage({ notices, onPost, onDelete, showToast }) {
                     </div>
                     <div className="space-y-2.5">
                         {filtered.length === 0 ? (
-                            <div className="text-[12px] text-[#8b949e] text-center py-10">No notices found</div>
+                            <div className="text-[12px] text-center py-10" style={{ color: secondaryTextColor }}>No notices found</div>
                         ) : filtered.map(n => (
                             <div
                                 key={n.id}
                                 className="p-3 border rounded-xl"
-                                style={{ borderLeft: `3px solid ${priorityBorder[n.priority] || '#30363d'}`, borderColor: '#30363d' }}
+                                style={{ borderLeft: `3px solid ${priorityBorder[n.priority] || 'var(--border-color)'}`, borderColor: borderColor }}
                             >
                                 <div className="flex items-center justify-between mb-1">
                                     <div className="text-[13px] font-bold">{n.title}</div>
                                     <Badge color={n.priority === 'Urgent' ? 'red' : n.priority === 'Important' ? 'gold' : 'cyan'}>{n.priority}</Badge>
                                 </div>
-                                <div className="text-[12px] text-[#8b949e] mb-1">{n.content}</div>
-                                <div className="text-[11px] text-[#484f58]">{n.date} · 👥 {n.target}</div>
+                                <div className="text-[12px] mb-1" style={{ color: secondaryTextColor }}>{n.content}</div>
+                                <div className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>{n.date} · 👥 {n.target}</div>
                                 <Btn variant="danger" size="xs" className="mt-2" onClick={() => onDelete(n.id)}>🗑 Delete</Btn>
                             </div>
                         ))}
@@ -177,6 +192,7 @@ export function NoticesPage({ notices, onPost, onDelete, showToast }) {
 
 // ===== EVENTS PAGE =====
 export function EventsPage({ events, onAdd, onDelete, showToast }) {
+    const { isDark } = useTheme();
     const [showModal, setShowModal] = useState(false);
     const [form, setForm] = useState({ title: '', desc: '', date: new Date().toISOString().split('T')[0], time: '10:00', category: 'Academic', audience: 'All', deadline: '' });
 
@@ -185,6 +201,10 @@ export function EventsPage({ events, onAdd, onDelete, showToast }) {
     const upcoming = events.filter(e => e.date > today);
     const todayEvts = events.filter(e => e.date === today);
     const past = events.filter(e => e.date < today);
+
+    const borderColor = 'var(--border-color)';
+    const secondaryTextColor = 'var(--muted-text)';
+    const cardBgColor = 'var(--card-bg)';
 
     const handleAdd = () => {
         if (!form.title.trim() || !form.date) { showToast('⚠️ Title and Date are required!'); return; }
@@ -196,13 +216,13 @@ export function EventsPage({ events, onAdd, onDelete, showToast }) {
     const catColors = { Exam: 'red', Meeting: 'gold', Academic: 'cyan', Holiday: 'green', Cultural: 'purple', Sports: 'orange', Other: 'cyan' };
 
     const EventCard = ({ e, type }) => (
-        <div className={`bg-[#161b22] border rounded-xl p-3 mb-2 border-l-[3px] ${type === 'today' ? 'border-l-yellow-400' : type === 'upcoming' ? 'border-l-cyan-400' : 'border-l-[#484f58] opacity-60'
-            } border-[#30363d]`}>
+        <div className={`border rounded-xl p-3 mb-2 border-l-[3px] ${type === 'today' ? 'border-l-yellow-400' : type === 'upcoming' ? 'border-l-cyan-400' : 'border-l-[#484f58] opacity-60'
+            }`} style={{ backgroundColor: cardBgColor, borderColor: borderColor }}>
             <div className="flex items-start justify-between gap-2">
                 <div>
                     <div className="font-bold text-[13px] mb-1">{e.title}</div>
-                    <div className="text-[11px] text-[#8b949e]">📅 {e.date} · 🕐 {e.time} · <Badge color={catColors[e.category] || 'cyan'}>{e.category}</Badge> · 👥 {e.audience}</div>
-                    <div className="text-[11px] text-[#8b949e] mt-1">{e.desc}</div>
+                    <div className="text-[11px]" style={{ color: secondaryTextColor }}>📅 {e.date} · 🕐 {e.time} · <Badge color={catColors[e.category] || 'cyan'}>{e.category}</Badge> · 👥 {e.audience}</div>
+                    <div className="text-[11px] mt-1" style={{ color: secondaryTextColor }}>{e.desc}</div>
                 </div>
                 {type !== 'past' && (
                     <Btn variant="danger" size="xs" onClick={() => onDelete(e.id)}>🗑</Btn>
@@ -227,7 +247,7 @@ export function EventsPage({ events, onAdd, onDelete, showToast }) {
                 <Card>
                     <CardTitle>📅 Upcoming & Today</CardTitle>
                     {[...todayEvts.map(e => ({ ...e, _type: 'today' })), ...upcoming.map(e => ({ ...e, _type: 'upcoming' }))].length === 0 ? (
-                        <div className="text-[12px] text-[#8b949e] text-center py-10">No upcoming events</div>
+                        <div className="text-[12px] text-center py-10" style={{ color: secondaryTextColor }}>No upcoming events</div>
                     ) : (
                         [...todayEvts.map(e => ({ ...e, _type: 'today' })), ...upcoming.map(e => ({ ...e, _type: 'upcoming' }))].map(e => (
                             <EventCard key={e.id} e={e} type={e._type} />
@@ -237,7 +257,7 @@ export function EventsPage({ events, onAdd, onDelete, showToast }) {
                 <Card>
                     <CardTitle>📋 Past Events</CardTitle>
                     {past.length === 0 ? (
-                        <div className="text-[12px] text-[#8b949e] text-center py-10">No past events</div>
+                        <div className="text-[12px] text-center py-10" style={{ color: secondaryTextColor }}>No past events</div>
                     ) : past.map(e => <EventCard key={e.id} e={e} type="past" />)}
                 </Card>
             </div>
@@ -278,6 +298,7 @@ export function EventsPage({ events, onAdd, onDelete, showToast }) {
 
 // ===== CLASSES PAGE =====
 export function ClassesPage({ classes, onCreateClass, onDeleteClass, onNavigate, showToast }) {
+    const { isDark } = useTheme();
     const [showModal, setShowModal] = useState(false);
     const [dept, setDept] = useState('');
     const [year, setYear] = useState('');
@@ -287,6 +308,12 @@ export function ClassesPage({ classes, onCreateClass, onDeleteClass, onNavigate,
     const [strength, setStrength] = useState(45);
     const [subjects, setSubjects] = useState([]);
     const [subInput, setSubInput] = useState('');
+
+    const borderColor = 'var(--border-color)';
+    const textColor = 'var(--text-primary)';
+    const secondaryTextColor = 'var(--muted-text)';
+    const cardBgColor = 'var(--card-bg)';
+    const innerCardBgColor = 'var(--surface-bg)';
 
     const autoKey = () => {
         if (!dept || !year) return;
@@ -322,8 +349,8 @@ export function ClassesPage({ classes, onCreateClass, onDeleteClass, onNavigate,
                 {classes.map(c => (
                     <div
                         key={c.name}
-                        className="bg-[#1c2333] border rounded-xl p-4 transition-all hover:scale-[1.01]"
-                        style={{ borderColor: c.color + '22' }}
+                        className="border rounded-xl p-4 transition-all hover:scale-[1.01]"
+                        style={{ backgroundColor: cardBgColor, borderColor: c.color + '22' }}
                         onMouseEnter={e => e.currentTarget.style.borderColor = c.color}
                         onMouseLeave={e => e.currentTarget.style.borderColor = c.color + '22'}
                     >
@@ -334,20 +361,20 @@ export function ClassesPage({ classes, onCreateClass, onDeleteClass, onNavigate,
                             </div>
                             <div>
                                 <div className="font-bold text-[17px]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{c.name}</div>
-                                <div className="text-[12px] text-[#8b949e]">{c.year} · {c.students} students</div>
+                                <div className="text-[12px]" style={{ color: secondaryTextColor }}>{c.year} · {c.students} students</div>
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-2 mb-3">
-                            <div className="bg-[#161b22] rounded-lg p-2.5 text-center">
+                            <div className="rounded-lg p-2.5 text-center" style={{ backgroundColor: innerCardBgColor }}>
                                 <div className="font-bold text-[20px]" style={{ fontFamily: 'Rajdhani, sans-serif', color: c.color }}>{c.cgpa}</div>
-                                <div className="text-[10px] text-[#8b949e]">Avg CGPA</div>
+                                <div className="text-[10px]" style={{ color: secondaryTextColor }}>Avg CGPA</div>
                             </div>
-                            <div className="bg-[#161b22] rounded-lg p-2.5 text-center">
+                            <div className="rounded-lg p-2.5 text-center" style={{ backgroundColor: innerCardBgColor }}>
                                 <div className="font-bold text-[20px]" style={{ fontFamily: 'Rajdhani, sans-serif', color: c.att >= 85 ? '#39d353' : '#ff7b29' }}>{c.att}%</div>
-                                <div className="text-[10px] text-[#8b949e]">Attendance</div>
+                                <div className="text-[10px]" style={{ color: secondaryTextColor }}>Attendance</div>
                             </div>
                         </div>
-                        <div className="text-[12px] text-[#8b949e] mb-2">Teacher: <span className="text-[#e6edf3]">{c.teacher}</span></div>
+                        <div className="text-[12px] mb-2" style={{ color: secondaryTextColor }}>Teacher: <span style={{ color: textColor }}>{c.teacher}</span></div>
                         <div className="flex flex-wrap gap-1 mb-3">
                             {(c.subjects || []).map(s => <Badge key={s} color="cyan" className="text-[9px]">{s}</Badge>)}
                         </div>
@@ -392,13 +419,13 @@ export function ClassesPage({ classes, onCreateClass, onDeleteClass, onNavigate,
                     </div>
                     <div className="flex flex-wrap gap-1.5 mb-2">
                         {quickSubs.map(s => (
-                            <button key={s} onClick={() => addSubject(s)} className="px-2.5 py-1 rounded-full border border-[#30363d] text-[11px] text-[#8b949e] hover:border-cyan-400/50 transition-all">
+                            <button key={s} onClick={() => addSubject(s)} className="px-2.5 py-1 rounded-full border text-[11px] hover:border-cyan-400/50 transition-all" style={{ borderColor: borderColor, color: secondaryTextColor }}>
                                 {s}
                             </button>
                         ))}
                     </div>
-                    <div className="min-h-9 bg-[#161b22] border border-[#30363d] rounded-lg p-2 flex flex-wrap gap-1">
-                        {subjects.length === 0 ? <span className="text-[11px] text-[#484f58]">No subjects added yet</span>
+                    <div className="min-h-9 border rounded-lg p-2 flex flex-wrap gap-1" style={{ backgroundColor: innerCardBgColor, borderColor: borderColor }}>
+                        {subjects.length === 0 ? <span className="text-[11px]" style={{ color: secondaryTextColor }}>No subjects added yet</span>
                             : subjects.map(s => (
                                 <span key={s} className="inline-flex items-center gap-1 bg-cyan-400/8 border border-cyan-400/20 rounded-full px-2.5 py-1 text-[11px] text-cyan-400">
                                     {s}

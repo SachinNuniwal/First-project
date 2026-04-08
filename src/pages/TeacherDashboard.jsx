@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import TeacherSidebar from '../components/TeacherSidebar';
 import TeacherHeader from '../components/TeacherHeader';
 import Toast from '../components/Toast';
@@ -23,6 +24,7 @@ const PAGE_TITLES = {
 };
 
 export default function TeacherDashboard() {
+    const { isDark } = useTheme();
     const { teacherId } = useParams();                    // ✅ URL se teacherId lo
 
     const [page, setPage] = useState('dashboard');
@@ -133,8 +135,12 @@ export default function TeacherDashboard() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#0d1117] text-[#e6edf3] text-[13px]"
-            style={{ fontFamily: 'Inter, sans-serif' }}>
+        <div className="flex min-h-screen transition-colors text-[13px]"
+            style={{ 
+                background: isDark ? "#0d1117" : "#f5f5f5",
+                color: isDark ? "#e6edf3" : "#24292f",
+                fontFamily: 'Inter, sans-serif' 
+            }}>
 
             <TeacherSidebar
                 activePage={page}

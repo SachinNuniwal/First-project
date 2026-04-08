@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import {
     Chart as ChartJS,
     ArcElement,
@@ -15,26 +16,34 @@ import { Doughnut, Bar } from 'react-chartjs-2';
 ChartJS.register(ArcElement, BarElement, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 // ── Stat Card ──────────────────────────────────────────────────────────────
-function StatCard({ icon, label, value, sub, color }) {
+function StatCard({ icon, label, value, sub, color, isDark }) {
+    const bgColor = isDark ? "#161b22" : "#f0f2f5";
+    const borderColor = isDark ? "#30363d" : "#d0d7de";
+    const hoverBorder = isDark ? "#444c56" : "#b0b9c3";
+    const subText = isDark ? "#484f58" : "#959da5";
+    const labelText = isDark ? "#8b949e" : "#57606a";
+    
     return (
-        <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-4 flex items-center gap-4 hover:border-[#444c56] transition-colors">
+        <div className="border rounded-xl p-4 flex items-center gap-4 hover:border-opacity-100 transition-colors"
+            style={{ background: bgColor, border: `1px solid ${borderColor}` }}>
             <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
                 style={{ background: `${color}18` }}>
                 {icon}
             </div>
             <div className="min-w-0">
-                <div className="text-[11px] text-[#8b949e] uppercase tracking-wider">{label}</div>
-                <div className="text-[22px] font-bold leading-tight" style={{ color, fontFamily: 'Rajdhani, sans-serif' }}>{value}</div>
-                {sub && <div className="text-[10px] text-[#484f58] mt-0.5">{sub}</div>}
+                <div className="text-[11px] uppercase tracking-wider transition-colors" style={{ color: labelText }}>{label}</div>
+                <div className="text-[22px] font-bold leading-tight transition-colors" style={{ color, fontFamily: 'Rajdhani, sans-serif' }}>{value}</div>
+                {sub && <div className="text-[10px] mt-0.5 transition-colors" style={{ color: subText }}>{sub}</div>}
             </div>
         </div>
     );
 }
 
 // ── Section Header ──────────────────────────────────────────────────────────
-function SectionTitle({ children }) {
+function SectionTitle({ children, isDark }) {
+    const textColor = isDark ? "#e6edf3" : "#24292f";
     return (
-        <div className="text-[13px] font-bold text-[#e6edf3] mb-3" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+        <div className="text-[13px] font-bold mb-3 transition-colors" style={{ fontFamily: 'Rajdhani, sans-serif', color: textColor }}>
             {children}
         </div>
     );
@@ -42,6 +51,7 @@ function SectionTitle({ children }) {
 
 // ── Main Dashboard ──────────────────────────────────────────────────────────
 export default function DashboardPage({ students, pendingLeaves, events, onApproveLeave, onRejectLeave, onNavigate }) {
+    const { isDark } = useTheme();
 
     // ── Derived stats ──
     const totalStudents = students.length;

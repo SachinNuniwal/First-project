@@ -1,3 +1,4 @@
+import { useTheme } from '../context/ThemeContext';
 import {
     Chart as ChartJS,
     ArcElement,
@@ -16,15 +17,14 @@ ChartJS.register(ArcElement, BarElement, LineElement, PointElement, CategoryScal
 // ── Reusable Stat Card ──────────────────────────────────────────────────────
 function StatCard({ icon, label, value, sub, color }) {
     return (
-        <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-4 flex items-center gap-4 hover:border-[#444c56] transition-colors">
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-                style={{ background: `${color}18` }}>
+        <div className="border rounded-xl p-4 flex items-center gap-4 hover:border-opacity-100 transition-colors" style={{ background: 'var(--card-bg)', border: '1px solid var(--border-color)' }}>
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style={{ background: `${color}18` }}>
                 {icon}
             </div>
             <div className="min-w-0">
-                <div className="text-[11px] text-[#8b949e] uppercase tracking-wider">{label}</div>
+                <div className="text-[11px] uppercase tracking-wider" style={{ color: 'var(--muted-text)' }}>{label}</div>
                 <div className="text-[22px] font-bold leading-tight" style={{ color, fontFamily: 'Rajdhani, sans-serif' }}>{value}</div>
-                {sub && <div className="text-[10px] text-[#484f58] mt-0.5">{sub}</div>}
+                {sub && <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>{sub}</div>}
             </div>
         </div>
     );
@@ -33,26 +33,29 @@ function StatCard({ icon, label, value, sub, color }) {
 // ── Chart Card Wrapper ──────────────────────────────────────────────────────
 function ChartCard({ title, children, className = '' }) {
     return (
-        <div className={`bg-[#161b22] border border-[#30363d] rounded-xl overflow-hidden ${className}`}>
-            <div className="px-4 py-3 border-b border-[#30363d]">
-                <div className="text-[13px] font-bold text-[#e6edf3]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{title}</div>
+        <div className={`border rounded-xl overflow-hidden transition-colors ${className}`} style={{ background: 'var(--card-bg)', border: '1px solid var(--border-color)' }}>
+            <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border-color)' }}>
+                <div className="text-[13px] font-bold" style={{ fontFamily: 'Rajdhani, sans-serif', color: 'var(--text-primary)' }}>{title}</div>
             </div>
             <div className="p-4">{children}</div>
         </div>
     );
 }
 
-const chartDefaults = {
-    plugins: { legend: { display: false } },
-    scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
-        y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
-    },
-    maintainAspectRatio: false,
-};
-
 // ── Main Analytics Page ─────────────────────────────────────────────────────
 export default function AnalyticsPage({ students, teachers, classes }) {
+    const { isDark } = useTheme();
+
+    const chartTextColor = isDark ? '#8b949e' : '#6b7280';
+    const chartGridColor = isDark ? '#21262d' : '#e5e7eb';
+    const chartDefaults = {
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { ticks: { color: chartTextColor }, grid: { color: chartGridColor } },
+            y: { ticks: { color: chartTextColor }, grid: { color: chartGridColor } },
+        },
+        maintainAspectRatio: false,
+    };
 
     // ── Summary Stats ──
     const totalStudents = students.length;
@@ -170,12 +173,12 @@ export default function AnalyticsPage({ students, teachers, classes }) {
         <div className="space-y-5">
 
             {/* ── Header Banner ── */}
-            <div className="bg-[#161b22] border border-[#30363d] rounded-xl px-5 py-4 flex items-center justify-between">
+            <div className="rounded-xl px-5 py-4 flex items-center justify-between" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}>
                 <div>
-                    <div className="text-[18px] font-bold text-[#e6edf3]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                    <div className="text-[18px] font-bold" style={{ fontFamily: 'Rajdhani, sans-serif', color: 'var(--text-primary)' }}>
                         📊 Department Analytics Report
                     </div>
-                    <div className="text-[11px] text-[#8b949e] mt-0.5">
+                    <div className="text-[11px] mt-0.5" style={{ color: 'var(--muted-text)' }}>
                         CSE Department · Academic Year 2025–26 · Generated {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </div>
                 </div>
@@ -186,22 +189,22 @@ export default function AnalyticsPage({ students, teachers, classes }) {
 
             {/* ── Summary Stat Cards ── */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                <StatCard icon="👩‍🎓" label="Total Students" value={totalStudents} sub={`${male}M · ${female}F`} color="#00d4ff" />
-                <StatCard icon="👩‍🏫" label="Total Teachers" value={totalTeachers} sub={`${Object.keys(depts).length} departments`} color="#a855f7" />
-                <StatCard icon="📊" label="Avg CGPA" value={avgCgpa} sub="Department average" color="#39d353" />
-                <StatCard icon="📅" label="Avg Attendance" value={`${avgAtt}%`} sub={`${students.filter(s => s.att < 75).length} below 75%`} color="#f0a500" />
+                <StatCard icon="👩‍🎓" label="Total Students" value={totalStudents} sub={`${male}M · ${female}F`} color="#00d4ff" isDark={isDark} />
+                <StatCard icon="👩‍🏫" label="Total Teachers" value={totalTeachers} sub={`${Object.keys(depts).length} departments`} color="#a855f7" isDark={isDark} />
+                <StatCard icon="📊" label="Avg CGPA" value={avgCgpa} sub="Department average" color="#39d353" isDark={isDark} />
+                <StatCard icon="📅" label="Avg Attendance" value={`${avgAtt}%`} sub={`${students.filter(s => s.att < 75).length} below 75%`} color="#f0a500" isDark={isDark} />
             </div>
 
             {/* ── Fee Summary Cards ── */}
             <div className="grid grid-cols-3 gap-3">
-                <StatCard icon="💰" label="Fee Collected" value={`₹${(totalFeeCollected / 100000).toFixed(1)}L`} sub="Total received" color="#39d353" />
-                <StatCard icon="⚠️" label="Fee Pending" value={`₹${(totalFeeDue / 100000).toFixed(1)}L`} sub="Outstanding dues" color="#ff4d4f" />
-                <StatCard icon="📈" label="Collection Rate" value={`${feeCollectionPct}%`} sub="Of total fee" color="#00d4ff" />
+                <StatCard icon="💰" label="Fee Collected" value={`₹${(totalFeeCollected / 100000).toFixed(1)}L`} sub="Total received" color="#39d353" isDark={isDark} />
+                <StatCard icon="⚠️" label="Fee Pending" value={`₹${(totalFeeDue / 100000).toFixed(1)}L`} sub="Outstanding dues" color="#ff4d4f" isDark={isDark} />
+                <StatCard icon="📈" label="Collection Rate" value={`${feeCollectionPct}%`} sub="Of total fee" color="#00d4ff" isDark={isDark} />
             </div>
 
             {/* ── Row 1: CGPA + Attendance Bar Charts ── */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <ChartCard title="🎓 Class-wise CGPA">
+                <ChartCard title="🎓 Class-wise CGPA" isDark={isDark}>
                     <div style={{ height: 200 }}>
                         <Bar data={cgpaBarData} options={{
                             ...chartDefaults,
@@ -213,7 +216,7 @@ export default function AnalyticsPage({ students, teachers, classes }) {
                     </div>
                     <div className="flex flex-wrap gap-2 mt-3">
                         {classes.map(c => (
-                            <div key={c.name} className="flex items-center gap-1.5 text-[10px] text-[#8b949e]">
+                            <div key={c.name} className="flex items-center gap-1.5 text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>
                                 <div className="w-2.5 h-2.5 rounded-sm" style={{ background: c.color }} />
                                 {c.name}: <span style={{ color: c.color }} className="font-semibold">{c.cgpa}</span>
                             </div>
@@ -221,7 +224,7 @@ export default function AnalyticsPage({ students, teachers, classes }) {
                     </div>
                 </ChartCard>
 
-                <ChartCard title="📅 Class-wise Attendance">
+                <ChartCard title="📅 Class-wise Attendance" isDark={isDark}>
                     <div style={{ height: 200 }}>
                         <Bar data={attBarData} options={{
                             ...chartDefaults,
@@ -233,7 +236,7 @@ export default function AnalyticsPage({ students, teachers, classes }) {
                     </div>
                     <div className="flex flex-wrap gap-2 mt-3">
                         {classes.map(c => (
-                            <div key={c.name} className="flex items-center gap-1.5 text-[10px] text-[#8b949e]">
+                            <div key={c.name} className="flex items-center gap-1.5 text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>
                                 <div className="w-2.5 h-2.5 rounded-sm" style={{ background: c.color }} />
                                 {c.name}: <span style={{ color: c.color }} className="font-semibold">{c.att}%</span>
                             </div>
@@ -246,61 +249,61 @@ export default function AnalyticsPage({ students, teachers, classes }) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
                 {/* Gender */}
-                <ChartCard title="👥 Gender Distribution">
+                <ChartCard title="👥 Gender Distribution" isDark={isDark}>
                     <div className="relative flex items-center justify-center" style={{ height: 160 }}>
                         <Doughnut data={genderData} options={doughnutOpts} />
                         <div className="absolute text-center pointer-events-none">
-                            <div className="text-[18px] font-bold text-[#e6edf3]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{totalStudents}</div>
-                            <div className="text-[9px] text-[#8b949e]">students</div>
+                            <div className="text-[18px] font-bold" style={{ fontFamily: 'Rajdhani, sans-serif', color: isDark ? '#e6edf3' : '#24292f' }}>{totalStudents}</div>
+                            <div className="text-[9px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>students</div>
                         </div>
                     </div>
                     <div className="flex justify-center gap-5 mt-3">
                         <div className="text-center">
                             <div className="text-[16px] font-bold text-[#00d4ff]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{male}</div>
-                            <div className="text-[10px] text-[#8b949e]">Male</div>
+                            <div className="text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>Male</div>
                         </div>
                         <div className="text-center">
                             <div className="text-[16px] font-bold text-[#a855f7]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{female}</div>
-                            <div className="text-[10px] text-[#8b949e]">Female</div>
+                            <div className="text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>Female</div>
                         </div>
                     </div>
                 </ChartCard>
 
                 {/* Fee Collection */}
-                <ChartCard title="💰 Fee Collection">
+                <ChartCard title="💰 Fee Collection" isDark={isDark}>
                     <div className="relative flex items-center justify-center" style={{ height: 160 }}>
                         <Doughnut data={feeData} options={doughnutOpts} />
                         <div className="absolute text-center pointer-events-none">
                             <div className="text-[18px] font-bold text-[#39d353]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{feeCollectionPct}%</div>
-                            <div className="text-[9px] text-[#8b949e]">collected</div>
+                            <div className="text-[9px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>collected</div>
                         </div>
                     </div>
                     <div className="flex justify-center gap-5 mt-3">
                         <div className="text-center">
                             <div className="text-[13px] font-bold text-[#39d353]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>₹{(totalFeeCollected / 100000).toFixed(1)}L</div>
-                            <div className="text-[10px] text-[#8b949e]">Paid</div>
+                            <div className="text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>Paid</div>
                         </div>
                         <div className="text-center">
                             <div className="text-[13px] font-bold text-[#ff4d4f]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>₹{(totalFeeDue / 100000).toFixed(1)}L</div>
-                            <div className="text-[10px] text-[#8b949e]">Pending</div>
+                            <div className="text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>Pending</div>
                         </div>
                     </div>
                 </ChartCard>
 
                 {/* Course-wise */}
-                <ChartCard title="📚 Course Distribution">
+                <ChartCard title="📚 Course Distribution" isDark={isDark}>
                     <div className="relative flex items-center justify-center" style={{ height: 160 }}>
                         <Doughnut data={courseData} options={doughnutOpts} />
                         <div className="absolute text-center pointer-events-none">
-                            <div className="text-[18px] font-bold text-[#e6edf3]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{Object.keys(courses).length}</div>
-                            <div className="text-[9px] text-[#8b949e]">courses</div>
+                            <div className="text-[18px] font-bold" style={{ fontFamily: 'Rajdhani, sans-serif', color: isDark ? '#e6edf3' : '#24292f' }}>{Object.keys(courses).length}</div>
+                            <div className="text-[9px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>courses</div>
                         </div>
                     </div>
                     <div className="flex justify-center flex-wrap gap-3 mt-3">
                         {Object.entries(courses).map(([course, count], i) => (
                             <div key={course} className="text-center">
                                 <div className="text-[13px] font-bold" style={{ color: courseColors[i], fontFamily: 'Rajdhani, sans-serif' }}>{count}</div>
-                                <div className="text-[10px] text-[#8b949e]">{course}</div>
+                                <div className="text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>{course}</div>
                             </div>
                         ))}
                     </div>
@@ -309,7 +312,7 @@ export default function AnalyticsPage({ students, teachers, classes }) {
 
             {/* ── Row 3: CGPA Buckets + Teacher Dept + Student Table ── */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <ChartCard title="📊 CGPA Distribution (All Students)">
+                <ChartCard title="📊 CGPA Distribution (All Students)" isDark={isDark}>
                     <div style={{ height: 200 }}>
                         <Bar data={cgpaBucketData} options={chartDefaults} />
                     </div>
@@ -317,22 +320,24 @@ export default function AnalyticsPage({ students, teachers, classes }) {
                         {Object.entries(buckets).map(([range, count], i) => (
                             <div key={range} className="text-center">
                                 <div className="text-[14px] font-bold" style={{ color: ['#ff4d4f', '#f0a500', '#00d4ff', '#39d353', '#a855f7'][i], fontFamily: 'Rajdhani, sans-serif' }}>{count}</div>
-                                <div className="text-[10px] text-[#8b949e]">CGPA {range}</div>
+                                <div className="text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>CGPA {range}</div>
                             </div>
                         ))}
                     </div>
                 </ChartCard>
 
-                <ChartCard title="👩‍🏫 Teacher Department Distribution">
+                <ChartCard title="👩‍🏫 Teacher Department Distribution" isDark={isDark}>
                     <div style={{ height: 200 }}>
                         <Bar data={deptBarData} options={chartDefaults} />
                     </div>
-                    <div className="mt-3 divide-y divide-[#21262d]">
+                    {/* ✅ Fixed: replaced divide-y + hardcoded colors with isDark inline styles */}
+                    <div className="mt-3" style={{ borderTop: `1px solid ${isDark ? '#21262d' : '#e5e7eb'}` }}>
                         {teachers.map(t => (
-                            <div key={t.id} className="flex items-center justify-between py-2 text-[11px]">
-                                <span className="text-[#e6edf3]">{t.name}</span>
+                            <div key={t.id} className="flex items-center justify-between py-2 text-[11px]"
+                                style={{ borderBottom: `1px solid ${isDark ? '#21262d' : '#e5e7eb'}` }}>
+                                <span style={{ color: isDark ? "#e6edf3" : "#111827" }}>{t.name}</span>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-[#8b949e]">{t.subjects.join(', ')}</span>
+                                    <span style={{ color: isDark ? "#8b949e" : "#6b7280" }}>{t.subjects.join(', ')}</span>
                                     <span className={`px-1.5 py-0.5 rounded text-[9px] font-semibold ${t.status === 'Active' ? 'bg-green-500/15 text-green-400' : 'bg-yellow-500/15 text-yellow-400'}`}>
                                         {t.status}
                                     </span>
@@ -344,30 +349,30 @@ export default function AnalyticsPage({ students, teachers, classes }) {
             </div>
 
             {/* ── Full Student Performance Table ── */}
-            <ChartCard title="📋 Full Student Performance Report">
+            <ChartCard title="📋 Full Student Performance Report" isDark={isDark}>
                 <div className="overflow-x-auto">
                     <table className="w-full text-[11px]">
                         <thead>
-                            <tr className="border-b border-[#30363d] text-[#8b949e] text-[10px]">
-                                <th className="text-left py-2 pr-4">Student</th>
-                                <th className="text-left py-2 pr-4">ID</th>
-                                <th className="text-left py-2 pr-4">Class</th>
-                                <th className="text-left py-2 pr-4">Course</th>
-                                <th className="text-left py-2 pr-4">CGPA</th>
-                                <th className="text-left py-2 pr-4">Attendance</th>
-                                <th className="text-left py-2">Fee Status</th>
+                            <tr className="border-b" style={{ borderColor: isDark ? '#30363d' : '#d0d7de' }}>
+                                {['Student', 'ID', 'Class', 'Course', 'CGPA', 'Attendance', 'Fee Status'].map(h => (
+                                    <th key={h} className="text-left py-2 pr-4 text-[10px]" style={{ color: isDark ? '#8b949e' : '#6b7280' }}>{h}</th>
+                                ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#21262d]">
+                        {/* ✅ Fixed: replaced divide-y + hover:bg + hardcoded colors with isDark inline styles */}
+                        <tbody>
                             {[...students].sort((a, b) => b.cgpa - a.cgpa).map(s => {
                                 const feePaid = s.fee.paid >= s.fee.total;
                                 const attLow = s.att < 75;
                                 return (
-                                    <tr key={s.id} className="hover:bg-[#1c2128] transition-colors">
-                                        <td className="py-2.5 pr-4 font-semibold text-[#e6edf3]">{s.name}</td>
-                                        <td className="py-2.5 pr-4 text-[#8b949e]">{s.id}</td>
-                                        <td className="py-2.5 pr-4 text-[#8b949e]">{s.class}</td>
-                                        <td className="py-2.5 pr-4 text-[#8b949e]">{s.course}</td>
+                                    <tr key={s.id} className="transition-colors"
+                                        style={{ borderBottom: `1px solid ${isDark ? '#21262d' : '#e5e7eb'}` }}
+                                        onMouseEnter={e => e.currentTarget.style.backgroundColor = isDark ? '#1c2128' : '#f9fafb'}
+                                        onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
+                                        <td className="py-2.5 pr-4 font-semibold" style={{ color: isDark ? "#e6edf3" : "#111827" }}>{s.name}</td>
+                                        <td className="py-2.5 pr-4" style={{ color: isDark ? "#8b949e" : "#6b7280" }}>{s.id}</td>
+                                        <td className="py-2.5 pr-4" style={{ color: isDark ? "#8b949e" : "#6b7280" }}>{s.class}</td>
+                                        <td className="py-2.5 pr-4" style={{ color: isDark ? "#8b949e" : "#6b7280" }}>{s.course}</td>
                                         <td className="py-2.5 pr-4">
                                             <span className="font-bold" style={{
                                                 color: s.cgpa >= 8.5 ? '#39d353' : s.cgpa >= 7 ? '#00d4ff' : s.cgpa >= 6 ? '#f0a500' : '#ff4d4f',
@@ -376,13 +381,15 @@ export default function AnalyticsPage({ students, teachers, classes }) {
                                         </td>
                                         <td className="py-2.5 pr-4">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-16 h-1.5 bg-[#30363d] rounded-full overflow-hidden">
+                                                <div className="w-16 h-1.5 rounded-full overflow-hidden"
+                                                    style={{ background: isDark ? '#30363d' : '#e5e7eb' }}>
                                                     <div className="h-full rounded-full" style={{
                                                         width: `${s.att}%`,
                                                         background: attLow ? '#ff4d4f' : '#39d353',
                                                     }} />
                                                 </div>
-                                                <span className={attLow ? 'text-red-400 font-semibold' : 'text-[#8b949e]'}>{s.att}%</span>
+                                                <span style={{ color: attLow ? '#f87171' : isDark ? '#8b949e' : '#6b7280' }}
+                                                    className={attLow ? 'font-semibold' : ''}>{s.att}%</span>
                                             </div>
                                         </td>
                                         <td className="py-2.5">

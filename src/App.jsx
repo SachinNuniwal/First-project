@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { ResultProvider } from './context/ResultContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Login from './pages/Auth/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
@@ -32,12 +33,15 @@ function AppRoutes() {
 export default function App() {
   return (
     // BrowserRouter must be outermost so useNavigate works in LoginWrapper
+    // ThemeProvider wraps everything for theme context
     // ResultProvider is inside BrowserRouter but wraps all routes so
     // teacher & student share the same result data
     <BrowserRouter>
-      <ResultProvider>
-        <AppRoutes />
-      </ResultProvider>
+      <ThemeProvider>
+        <ResultProvider>
+          <AppRoutes />
+        </ResultProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

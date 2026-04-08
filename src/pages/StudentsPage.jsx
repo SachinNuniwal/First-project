@@ -1,9 +1,15 @@
 import { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import { Card, Badge, Btn, SectionHeader, SearchBar, TableWrap, THead, TRow, TD } from '../components/UI';
 
 export default function StudentsPage({ students, onViewStudent, showToast }) {
+    const { isDark } = useTheme();
     const [search, setSearch] = useState('');
     const [filterClass, setFilterClass] = useState('');
+
+    const bgColor = isDark ? "#161b22" : "#f0f2f5";
+    const borderColor = isDark ? "#30363d" : "#d0d7de";
+    const textColor = isDark ? "#e6edf3" : "#24292f";
 
     const filtered = students.filter(s => {
         const matchSearch = !search || s.name.toLowerCase().includes(search.toLowerCase()) || s.id.includes(search) || s.class.toLowerCase().includes(search.toLowerCase());
@@ -24,7 +30,12 @@ export default function StudentsPage({ students, onViewStudent, showToast }) {
                 <select
                     value={filterClass}
                     onChange={e => setFilterClass(e.target.value)}
-                    className="bg-[#161b22] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-1.5 text-[12px] outline-none focus:border-cyan-400"
+                    className="rounded-lg text-[12px] outline-none focus:border-cyan-400 px-3 py-1.5 border transition-colors"
+                    style={{
+                        background: bgColor,
+                        border: `1px solid ${borderColor}`,
+                        color: textColor
+                    }}
                 >
                     <option value="">All Classes</option>
                     {['CSE-3A', 'CSE-3B', 'CSE-2A', 'MCA-1'].map(c => <option key={c}>{c}</option>)}

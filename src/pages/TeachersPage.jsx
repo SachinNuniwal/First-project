@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import { Card, Badge, Btn, SectionHeader, SearchBar, TableWrap, THead, TRow, TD, Modal, ModalFooter, FormGroup, Input, Select } from '../components/UI';
 import apiService from '../api/apiService';
 
 export default function TeachersPage({ teachers, onViewTeacher, onAddTeacher, onRemoveTeacher, onUpdateTeacher, showToast }) {
+    const { isDark } = useTheme();
     const [search, setSearch] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
     const [showRemoveModal, setShowRemoveModal] = useState(false);

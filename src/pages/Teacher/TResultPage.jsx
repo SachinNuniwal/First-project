@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 // ── CLASS → SUBJECTS mapping ──────────────────────────────────────────────────
 const CLASS_SUBJECTS = {
@@ -74,7 +75,14 @@ function calcGrade(marks, max = 100) {
 
 // ═════════════════════════════════════════════════════════════════════════════
 export default function TResultPage({ showToast }) {
+    const { isDark } = useTheme();
     const [tab, setTab] = useState('manual');
+
+    const bgColor = isDark ? '#161b22' : '#f0f2f5';
+    const borderColor = isDark ? '#30363d' : '#d1d9e0';
+    const textColor = isDark ? '#e6edf3' : '#24292f';
+    const secondaryTextColor = isDark ? '#8b949e' : '#656d76';
+    const hoverTextColor = isDark ? '#e6edf3' : '#24292f';
 
     const tabs = [
         { key: 'manual', label: '✏️ Manual Entry' },
@@ -84,13 +92,13 @@ export default function TResultPage({ showToast }) {
 
     return (
         <div className="space-y-5">
-            <div className="flex border-b border-[#30363d]">
+            <div className="flex border-b" style={{ borderColor: borderColor }}>
                 {tabs.map(t => (
                     <button key={t.key} onClick={() => setTab(t.key)}
                         className={`px-5 py-2.5 text-[13px] font-semibold border-b-2 transition-all
                             ${tab === t.key
                                 ? 'text-cyan-400 border-cyan-400'
-                                : 'text-[#8b949e] border-transparent hover:text-[#e6edf3]'}`}>
+                                : `text-[${secondaryTextColor}] border-transparent hover:text-[${hoverTextColor}]`}`}>
                         {t.label}
                     </button>
                 ))}
@@ -107,12 +115,20 @@ export default function TResultPage({ showToast }) {
 // MANUAL ENTRY TAB
 // ═════════════════════════════════════════════════════════════════════════════
 function ManualEntryTab({ showToast }) {
+    const { isDark } = useTheme();
     const [selClass, setSelClass] = useState('');
     const [selSubject, setSelSubject] = useState('');
     const [selExam, setSelExam] = useState('');
     const [maxMarks, setMaxMarks] = useState('100');
     const [students, setStudents] = useState([]);
     const [ready, setReady] = useState(false);
+
+    const bgColor = isDark ? '#161b22' : '#f0f2f5';
+    const borderColor = isDark ? '#30363d' : '#d1d9e0';
+    const textColor = isDark ? '#e6edf3' : '#24292f';
+    const secondaryTextColor = isDark ? '#8b949e' : '#656d76';
+    const inputBgColor = isDark ? '#21262d' : '#ffffff';
+    const hoverBgColor = isDark ? '#1c2128' : '#f6f8fa';
 
     const handleClassChange = (cls) => {
         setSelClass(cls);
@@ -160,8 +176,8 @@ function ManualEntryTab({ showToast }) {
         <div className="space-y-4">
 
             {/* ── Selection Panel ── */}
-            <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5">
-                <div className="text-[13px] font-bold text-[#e6edf3] mb-4" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+            <div className="border rounded-xl p-5" style={{ backgroundColor: bgColor, borderColor: borderColor }}>
+                <div className="text-[13px] font-bold mb-4" style={{ color: textColor, fontFamily: 'Rajdhani, sans-serif' }}>
                     ✏️ Manual Result Entry — Select Class & Subject
                 </div>
 
@@ -172,7 +188,8 @@ function ManualEntryTab({ showToast }) {
                             📚 Class / Section
                         </label>
                         <select value={selClass} onChange={e => handleClassChange(e.target.value)}
-                            className="w-full bg-[#21262d] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-2 text-[12px] outline-none focus:border-cyan-400">
+                            className="w-full rounded-lg px-3 py-2 text-[12px] outline-none focus:border-cyan-400"
+                            style={{ backgroundColor: inputBgColor, border: `1px solid ${borderColor}`, color: textColor }}>
                             <option value="">— Select Class —</option>
                             {CLASSES.map(c => <option key={c}>{c}</option>)}
                         </select>
@@ -186,7 +203,8 @@ function ManualEntryTab({ showToast }) {
                         <select value={selSubject}
                             onChange={e => { setSelSubject(e.target.value); setReady(false); }}
                             disabled={!selClass}
-                            className="w-full bg-[#21262d] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-2 text-[12px] outline-none focus:border-cyan-400 disabled:opacity-40">
+                            className="w-full rounded-lg px-3 py-2 text-[12px] outline-none focus:border-cyan-400 disabled:opacity-40"
+                            style={{ backgroundColor: inputBgColor, border: `1px solid ${borderColor}`, color: textColor }}>
                             <option value="">— Select Subject —</option>
                             {subjects.map(s => <option key={s}>{s}</option>)}
                         </select>
@@ -200,7 +218,8 @@ function ManualEntryTab({ showToast }) {
                         <select value={selExam}
                             onChange={e => { setSelExam(e.target.value); setReady(false); }}
                             disabled={!selSubject}
-                            className="w-full bg-[#21262d] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-2 text-[12px] outline-none focus:border-cyan-400 disabled:opacity-40">
+                            className="w-full rounded-lg px-3 py-2 text-[12px] outline-none focus:border-cyan-400 disabled:opacity-40"
+                            style={{ backgroundColor: inputBgColor, border: `1px solid ${borderColor}`, color: textColor }}>
                             <option value="">— Select Exam —</option>
                             {EXAM_TYPES.map(e => <option key={e}>{e}</option>)}
                         </select>
@@ -212,7 +231,8 @@ function ManualEntryTab({ showToast }) {
                             🎯 Max Marks
                         </label>
                         <input type="number" value={maxMarks} onChange={e => setMaxMarks(e.target.value)}
-                            className="w-full bg-[#21262d] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-2 text-[12px] outline-none focus:border-cyan-400" />
+                            className="w-full rounded-lg px-3 py-2 text-[12px] outline-none focus:border-cyan-400"
+                            style={{ backgroundColor: inputBgColor, border: `1px solid ${borderColor}`, color: textColor }} />
                     </div>
                 </div>
 
@@ -250,14 +270,14 @@ function ManualEntryTab({ showToast }) {
 
             {/* ── Student Table ── */}
             {ready && students.length > 0 && (
-                <div className="bg-[#161b22] border border-[#30363d] rounded-xl overflow-hidden">
+                <div className="border rounded-xl overflow-hidden" style={{ backgroundColor: bgColor, borderColor: borderColor }}>
 
-                    <div className="px-4 py-3 border-b border-[#30363d] flex items-center justify-between flex-wrap gap-3">
+                    <div className="px-4 py-3 border-b flex items-center justify-between flex-wrap gap-3" style={{ borderColor: borderColor }}>
                         <div>
-                            <div className="text-[13px] font-bold text-[#e6edf3]" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                            <div className="text-[13px] font-bold" style={{ color: textColor, fontFamily: 'Rajdhani, sans-serif' }}>
                                 📋 {selClass} — {selSubject} — {selExam}
                             </div>
-                            <div className="text-[11px] text-[#8b949e] mt-0.5">
+                            <div className="text-[11px] mt-0.5" style={{ color: secondaryTextColor }}>
                                 Max: <span className="text-cyan-400 font-semibold">{maxMarks}</span>
                                 &nbsp;·&nbsp; Total: <span className="text-cyan-400 font-semibold">{students.length}</span>
                                 &nbsp;·&nbsp; Filled: <span className="text-yellow-400 font-semibold">{filled}</span>
@@ -267,11 +287,13 @@ function ManualEntryTab({ showToast }) {
                         </div>
                         <div className="flex gap-2">
                             <button onClick={handleAutoFill}
-                                className="px-3 py-1.5 border border-[#30363d] rounded-lg text-[#8b949e] hover:border-cyan-400 hover:text-cyan-400 transition-all text-[11px] font-semibold">
+                                className="px-3 py-1.5 border rounded-lg text-[11px] font-semibold transition-all hover:border-cyan-400 hover:text-cyan-400"
+                                style={{ borderColor: borderColor, color: secondaryTextColor }}>
                                 🎲 Auto Fill
                             </button>
                             <button onClick={handleClear}
-                                className="px-3 py-1.5 border border-[#30363d] rounded-lg text-[#8b949e] hover:border-red-400 hover:text-red-400 transition-all text-[11px] font-semibold">
+                                className="px-3 py-1.5 border rounded-lg text-[11px] font-semibold transition-all hover:border-red-400 hover:text-red-400"
+                                style={{ borderColor: borderColor, color: secondaryTextColor }}>
                                 🗑 Clear
                             </button>
                         </div>
@@ -280,7 +302,7 @@ function ManualEntryTab({ showToast }) {
                     <div className="overflow-x-auto">
                         <table className="w-full text-[12px]">
                             <thead>
-                                <tr className="border-b border-[#30363d] bg-[#1c2128] text-[#8b949e] text-[10px] uppercase tracking-wider">
+                                <tr className="text-[10px] uppercase tracking-wider" style={{ borderColor: borderColor, color: secondaryTextColor, backgroundColor: hoverBgColor }}>
                                     <th className="text-left p-3">#</th>
                                     <th className="text-left p-3">Roll No</th>
                                     <th className="text-left p-3">Student Name</th>
@@ -291,16 +313,16 @@ function ManualEntryTab({ showToast }) {
                                     <th className="text-left p-3">Result</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#21262d]">
+                            <tbody className="divide-y" style={{ borderColor: borderColor }}>
                                 {students.map((s, idx) => {
                                     const { grade, color } = calcGrade(s.marks, maxMarks);
                                     const pct = (parseInt(s.marks) / parseInt(maxMarks || 100)) * 100;
                                     const passed = !isNaN(pct) && pct >= 40;
                                     return (
-                                        <tr key={s.roll} className="hover:bg-[#1c2128] transition-colors">
-                                            <td className="p-3 text-[#484f58]">{idx + 1}</td>
-                                            <td className="p-3 font-mono text-[#8b949e]">{s.roll}</td>
-                                            <td className="p-3 font-semibold text-[#e6edf3]">{s.name}</td>
+                                        <tr className="transition-colors" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = hoverBgColor} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                                            <td className="p-3" style={{ color: secondaryTextColor }}>{idx + 1}</td>
+                                            <td className="p-3 font-mono" style={{ color: secondaryTextColor }}>{s.roll}</td>
+                                            <td className="p-3 font-semibold" style={{ color: textColor }}>{s.name}</td>
                                             <td className="p-3">
                                                 <span className="px-2 py-0.5 bg-purple-400/10 border border-purple-400/20 rounded-full text-[10px] text-purple-400 font-semibold whitespace-nowrap">
                                                     {selSubject}
@@ -312,10 +334,11 @@ function ManualEntryTab({ showToast }) {
                                                     value={s.marks}
                                                     onChange={e => handleMark(s.roll, e.target.value)}
                                                     placeholder="—"
-                                                    className="w-20 bg-[#21262d] border border-[#30363d] rounded-lg px-2 py-1.5 text-center text-[#e6edf3] outline-none focus:border-cyan-400 text-[12px] font-mono transition-colors"
+                                                    className="w-20 border rounded-lg px-2 py-1.5 text-center outline-none focus:border-cyan-400 text-[12px] font-mono transition-colors"
+                                                    style={{ backgroundColor: inputBgColor, borderColor: borderColor, color: textColor }}
                                                 />
                                             </td>
-                                            <td className="p-3 text-[#8b949e] font-mono">
+                                            <td className="p-3 font-mono" style={{ color: secondaryTextColor }}>
                                                 {s.marks !== '' && !isNaN(pct) ? `${pct.toFixed(1)}%` : '—'}
                                             </td>
                                             <td className="p-3">
@@ -339,7 +362,7 @@ function ManualEntryTab({ showToast }) {
                         </table>
                     </div>
 
-                    <div className="p-4 border-t border-[#30363d]">
+                    <div className="p-4 border-t" style={{ borderColor: borderColor }}>
                         <button onClick={handleSave}
                             className="w-full py-2.5 bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-semibold rounded-lg hover:opacity-85 transition-all text-[13px]">
                             💾 Save & Publish Results
@@ -350,10 +373,10 @@ function ManualEntryTab({ showToast }) {
 
             {/* Empty state */}
             {!ready && (
-                <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-12 text-center">
+                <div className="border rounded-xl p-12 text-center" style={{ backgroundColor: bgColor, borderColor: borderColor }}>
                     <div className="text-4xl mb-3">📋</div>
-                    <div className="text-[14px] font-semibold text-[#8b949e]">Select Class, Subject & Exam Type</div>
-                    <div className="text-[12px] text-[#484f58] mt-1">Then click "Load Student List" to begin entering marks</div>
+                    <div className="text-[14px] font-semibold" style={{ color: secondaryTextColor }}>Select Class, Subject & Exam Type</div>
+                    <div className="text-[12px] mt-1" style={{ color: secondaryTextColor }}>Then click "Load Student List" to begin entering marks</div>
                 </div>
             )}
         </div>
@@ -364,6 +387,7 @@ function ManualEntryTab({ showToast }) {
 // FILE UPLOAD TAB
 // ═════════════════════════════════════════════════════════════════════════════
 function FileUploadTab({ showToast }) {
+    const { isDark } = useTheme();
     const [uploadedFile, setUploadedFile] = useState(null);
     const [emailNotify, setEmailNotify] = useState(true);
     const [selClass, setSelClass] = useState('');
@@ -372,15 +396,23 @@ function FileUploadTab({ showToast }) {
 
     const subjects = selClass ? CLASS_SUBJECTS[selClass] : [];
 
+    const bgColor = isDark ? '#161b22' : '#f0f2f5';
+    const borderColor = isDark ? '#30363d' : '#d1d9e0';
+    const textColor = isDark ? '#e6edf3' : '#24292f';
+    const secondaryTextColor = isDark ? '#8b949e' : '#656d76';
+    const inputBgColor = isDark ? '#21262d' : '#ffffff';
+    const cardBgColor = isDark ? '#21262d' : '#f6f8fa';
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5">
-                <div className="text-[13px] font-bold text-[#e6edf3] mb-4" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+            <div className="border rounded-xl p-5" style={{ backgroundColor: bgColor, borderColor: borderColor }}>
+                <div className="text-[13px] font-bold mb-4" style={{ color: textColor, fontFamily: 'Rajdhani, sans-serif' }}>
                     📤 Upload Result File
                 </div>
                 <FormGroup label="Select Class">
                     <select value={selClass} onChange={e => { setSelClass(e.target.value); setSelSubject(''); }}
-                        className="w-full bg-[#21262d] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-2 text-[12px] outline-none focus:border-cyan-400">
+                        className="w-full rounded-lg px-3 py-2 text-[12px] outline-none focus:border-cyan-400"
+                        style={{ backgroundColor: inputBgColor, border: `1px solid ${borderColor}`, color: textColor }}>
                         <option value="">— Select Class —</option>
                         {CLASSES.map(c => <option key={c}>{c}</option>)}
                     </select>
@@ -388,38 +420,41 @@ function FileUploadTab({ showToast }) {
                 <FormGroup label="Subject">
                     <select value={selSubject} onChange={e => setSelSubject(e.target.value)}
                         disabled={!selClass}
-                        className="w-full bg-[#21262d] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-2 text-[12px] outline-none focus:border-cyan-400 disabled:opacity-40">
+                        className="w-full rounded-lg px-3 py-2 text-[12px] outline-none focus:border-cyan-400 disabled:opacity-40"
+                        style={{ backgroundColor: inputBgColor, border: `1px solid ${borderColor}`, color: textColor }}>
                         <option value="">— Select Subject —</option>
                         {subjects.map(s => <option key={s}>{s}</option>)}
                     </select>
                 </FormGroup>
                 <FormGroup label="Exam Type">
                     <select value={selExam} onChange={e => setSelExam(e.target.value)}
-                        className="w-full bg-[#21262d] border border-[#30363d] rounded-lg text-[#e6edf3] px-3 py-2 text-[12px] outline-none focus:border-cyan-400">
+                        className="w-full rounded-lg px-3 py-2 text-[12px] outline-none focus:border-cyan-400"
+                        style={{ backgroundColor: inputBgColor, border: `1px solid ${borderColor}`, color: textColor }}>
                         {EXAM_TYPES.map(e => <option key={e}>{e}</option>)}
                     </select>
                 </FormGroup>
                 <FormGroup label="Upload File (.xlsx / .csv / .pdf)">
                     <div onClick={() => document.getElementById('fileInput').click()}
-                        className="border-2 border-dashed border-[#30363d] rounded-xl p-8 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-400/5 transition-all">
+                        className="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-400/5 transition-all"
+                        style={{ borderColor: borderColor }}>
                         <div className="text-4xl mb-2">📁</div>
-                        <div className="text-[13px] text-[#8b949e]">Click or drag & drop your result file</div>
-                        <div className="text-[11px] text-[#484f58] mt-1">Supported: .xlsx, .csv, .pdf</div>
+                        <div className="text-[13px]" style={{ color: secondaryTextColor }}>Click or drag & drop your result file</div>
+                        <div className="text-[11px] mt-1" style={{ color: secondaryTextColor }}>Supported: .xlsx, .csv, .pdf</div>
                         <input type="file" id="fileInput" className="hidden" accept=".xlsx,.csv,.pdf"
                             onChange={e => { if (e.target.files[0]) setUploadedFile(e.target.files[0]); }} />
                     </div>
                     {uploadedFile && (
-                        <div className="mt-3 flex items-center gap-3 p-3 bg-[#21262d] rounded-lg border border-[#30363d]">
+                        <div className="mt-3 flex items-center gap-3 p-3 rounded-lg border" style={{ backgroundColor: cardBgColor, borderColor: borderColor }}>
                             <div className="w-9 h-9 rounded-lg bg-cyan-400/10 flex items-center justify-center text-lg">📄</div>
                             <div className="flex-1 min-w-0">
-                                <div className="text-[13px] font-semibold truncate">{uploadedFile.name}</div>
-                                <div className="text-[10px] text-[#8b949e]">{(uploadedFile.size / 1024).toFixed(1)} KB</div>
+                                <div className="text-[13px] font-semibold truncate" style={{ color: textColor }}>{uploadedFile.name}</div>
+                                <div className="text-[10px]" style={{ color: secondaryTextColor }}>{(uploadedFile.size / 1024).toFixed(1)} KB</div>
                             </div>
                             <span className="text-[10px] bg-green-500/15 text-green-400 px-2 py-0.5 rounded-full font-semibold">Ready</span>
                         </div>
                     )}
                 </FormGroup>
-                <label className="flex items-center gap-2 text-[13px] text-[#8b949e] cursor-pointer mb-4">
+                <label className="flex items-center gap-2 text-[13px] cursor-pointer mb-4" style={{ color: secondaryTextColor }}>
                     <input type="checkbox" checked={emailNotify} onChange={e => setEmailNotify(e.target.checked)}
                         className="w-4 h-4 accent-cyan-400" />
                     📧 Email result to each student automatically
@@ -430,23 +465,23 @@ function FileUploadTab({ showToast }) {
                 </button>
             </div>
 
-            <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5">
-                <div className="text-[13px] font-bold text-[#e6edf3] mb-4" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+            <div className="border rounded-xl p-5" style={{ backgroundColor: bgColor, borderColor: borderColor }}>
+                <div className="text-[13px] font-bold mb-4" style={{ color: textColor, fontFamily: 'Rajdhani, sans-serif' }}>
                     📋 Upload Tips
                 </div>
                 <div className="space-y-3">
-                    <div className="bg-[#21262d] rounded-xl p-4">
+                    <div className="rounded-xl p-4" style={{ backgroundColor: cardBgColor }}>
                         <div className="text-[12px] font-semibold text-cyan-400 mb-2">📄 Required Format</div>
-                        <div className="text-[12px] text-[#8b949e] space-y-1">
+                        <div className="text-[12px] space-y-1" style={{ color: secondaryTextColor }}>
                             <div>Column 1: Roll Number</div>
                             <div>Column 2: Student Name</div>
                             <div>Column 3: Marks Obtained</div>
                             <div>Column 4+: Subject-wise marks (optional)</div>
                         </div>
                     </div>
-                    <div className="bg-[#21262d] rounded-xl p-4">
+                    <div className="rounded-xl p-4" style={{ backgroundColor: cardBgColor }}>
                         <div className="text-[12px] font-semibold text-green-400 mb-2">✅ On Publish</div>
-                        <div className="text-[12px] text-[#8b949e] space-y-1">
+                        <div className="text-[12px] space-y-1" style={{ color: secondaryTextColor }}>
                             <div>• Result saved to system</div>
                             <div>• Email sent to each student</div>
                             <div>• Students can view via portal</div>
@@ -455,7 +490,7 @@ function FileUploadTab({ showToast }) {
                     </div>
                 </div>
                 <button onClick={() => showToast('⬇️ Template downloaded!')}
-                    className="w-full mt-4 py-2 border border-[#30363d] rounded-lg text-[#8b949e] hover:border-cyan-400 hover:text-cyan-400 transition-all text-[12px] font-semibold">
+                    className="w-full mt-4 py-2 border rounded-lg text-[12px] font-semibold transition-all hover:border-cyan-400 hover:text-cyan-400" style={{ borderColor: borderColor, color: secondaryTextColor }}>
                     ⬇️ Download Sample Template
                 </button>
             </div>
@@ -467,19 +502,25 @@ function FileUploadTab({ showToast }) {
 // HISTORY TAB
 // ═════════════════════════════════════════════════════════════════════════════
 function HistoryTab({ showToast }) {
+    const { isDark } = useTheme();
+
+    const bgColor = isDark ? '#161b22' : '#f0f2f5';
+    const borderColor = isDark ? '#30363d' : '#d1d9e0';
+    const textColor = isDark ? '#e6edf3' : '#24292f';
+    const secondaryTextColor = isDark ? '#8b949e' : '#656d76';
+    const hoverBgColor = isDark ? '#1c2128' : '#f6f8fa';
     const statusColor = s =>
         s === 'Published' ? 'bg-green-500/15 text-green-400' : 'bg-cyan-400/15 text-cyan-400';
 
     return (
-        <div className="bg-[#161b22] border border-[#30363d] rounded-xl overflow-hidden">
-            <div className="px-4 py-3 border-b border-[#30363d] text-[13px] font-bold text-[#e6edf3]"
-                style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+        <div className="border rounded-xl overflow-hidden" style={{ backgroundColor: bgColor, borderColor: borderColor }}>
+            <div className="px-4 py-3 border-b text-[13px] font-bold" style={{ borderColor: borderColor, color: textColor, fontFamily: 'Rajdhani, sans-serif' }}>
                 📂 Previously Uploaded Results
             </div>
             <div className="overflow-x-auto">
                 <table className="w-full text-[12px]">
                     <thead>
-                        <tr className="border-b border-[#30363d] text-[#8b949e] text-[10px]">
+                        <tr className="text-[10px]" style={{ borderColor: borderColor, color: secondaryTextColor }}>
                             <th className="text-left p-3">Class</th>
                             <th className="text-left p-3">Subject</th>
                             <th className="text-left p-3">Exam</th>
@@ -489,14 +530,14 @@ function HistoryTab({ showToast }) {
                             <th className="text-left p-3">Action</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#21262d]">
+                    <tbody className="divide-y" style={{ borderColor: borderColor }}>
                         {uploadedHistory.map((r, i) => (
-                            <tr key={i} className="hover:bg-[#1c2128] transition-colors">
-                                <td className="p-3 font-semibold text-[#e6edf3]">{r.class}</td>
-                                <td className="p-3 text-[#8b949e]">{r.subject}</td>
-                                <td className="p-3 text-[#8b949e]">{r.exam}</td>
-                                <td className="p-3 text-[#8b949e]">{r.date}</td>
-                                <td className="p-3 text-[#8b949e]">{r.students}</td>
+                            <tr key={i} className="transition-colors" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = hoverBgColor} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                                <td className="p-3 font-semibold" style={{ color: textColor }}>{r.class}</td>
+                                <td className="p-3" style={{ color: secondaryTextColor }}>{r.subject}</td>
+                                <td className="p-3" style={{ color: secondaryTextColor }}>{r.exam}</td>
+                                <td className="p-3" style={{ color: secondaryTextColor }}>{r.date}</td>
+                                <td className="p-3" style={{ color: secondaryTextColor }}>{r.students}</td>
                                 <td className="p-3">
                                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusColor(r.status)}`}>
                                         {r.status}
@@ -504,7 +545,7 @@ function HistoryTab({ showToast }) {
                                 </td>
                                 <td className="p-3">
                                     <button onClick={() => showToast(`👁 Viewing ${r.subject} results`)}
-                                        className="px-2.5 py-1 border border-[#30363d] rounded-lg text-[#8b949e] hover:border-cyan-400 hover:text-cyan-400 transition-all text-[10px]">
+                                        className="px-2.5 py-1 border rounded-lg text-[10px] transition-all hover:border-cyan-400 hover:text-cyan-400" style={{ borderColor: borderColor, color: secondaryTextColor }}>
                                         View
                                     </button>
                                 </td>
@@ -519,9 +560,12 @@ function HistoryTab({ showToast }) {
 
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 function FormGroup({ label, children }) {
+    const { isDark } = useTheme();
+    const secondaryTextColor = isDark ? '#8b949e' : '#656d76';
+
     return (
         <div className="mb-4">
-            <label className="block text-[11px] font-semibold text-[#8b949e] uppercase tracking-wider mb-1.5">
+            <label className="block text-[11px] font-semibold uppercase tracking-wider mb-1.5" style={{ color: secondaryTextColor }}>
                 {label}
             </label>
             {children}
