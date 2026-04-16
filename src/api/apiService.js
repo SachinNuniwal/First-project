@@ -194,7 +194,7 @@ const mockApi = {
                 DB.subjectAttendance[ei] = { ...DB.subjectAttendance[ei], ...rec };
                 results.push({ ...DB.subjectAttendance[ei] });
             } else {
-                const n = { ...rec, id: Date.now() + Math.random() };
+                const n = { ...rec, id: Date.now() + Math.floor(Math.random() * 1000) };
                 DB.subjectAttendance.push(n);
                 results.push({ ...n });
             }

@@ -1,4 +1,3 @@
-import { colors } from "sockjs-client/dist/sockjs";
 import { normalizeMessage } from "../utils/chatHelpers";
 
 // TODO: Replace with backend API endpoint to validate user

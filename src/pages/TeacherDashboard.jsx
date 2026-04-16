@@ -50,7 +50,11 @@ export default function TeacherDashboard() {
                     apiService.getAllClasses()
                 ]);
 
-                setTeacher({ ...teacherData, photo: localStorage.getItem('teacherPhoto') || null });
+                // ✅
+setTeacher({ 
+  ...teacherData, 
+  photo: teacherData.photo || localStorage.getItem('teacherPhoto') || null 
+});
                 setStudents(studentsData);
                 setClasses(classesData);
             } catch (error) {

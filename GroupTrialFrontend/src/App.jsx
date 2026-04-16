@@ -7,7 +7,7 @@ import {
   fetchUserGroups,
   validateUserId
 } from "./services/api";
-import { socketService } from "./services/socketService";
+import { wsService as socketService } from "../api/apiService";
 import {
   getGroupId,
   normalizeMessage,
@@ -85,7 +85,7 @@ function App() {
 
     async function connectWebSocket() {
       try {
-        await socketService.connect(currentUserId);
+        await socketService.connect(currentUserId, "user");
         if (isSubscribed) {
           setIsSocketConnected(true);
         }

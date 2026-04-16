@@ -223,10 +223,9 @@ export default function Login({ onLogin }) {
                             </p>
 
                             <Field label="Email" type="email" placeholder="your.id@rps.edu.in"
-                                value={email} onChange={setEmail} onKeyDown={handleKeyDown} />
-                            <Field label="Password" type="password" placeholder="••••••••••"
-                                value={password} onChange={setPassword} onKeyDown={handleKeyDown} />
-
+    value={email} onChange={setEmail} onKeyDown={handleKeyDown} isDark={isDark} />
+<Field label="Password" type="password" placeholder="••••••••••"
+    value={password} onChange={setPassword} onKeyDown={handleKeyDown} isDark={isDark} />
                             {/* Error */}
                             {error && (
                                 <div style={{

@@ -174,27 +174,35 @@ export function mergeIncomingMessage(existing, incoming) {
 }
 
 export function normalizeMessage(rawMessage, fallbackGroupId = "") {
-  const timestamp = normalizeTimestamp(rawMessage?.timestamp ?? rawMessage?.createdAt);
-  const normalizedSender = String(rawMessage?.sender ?? rawMessage?.senderId ?? "Unknown").trim();
-  const normalizedContent = String(rawMessage?.content ?? rawMessage?.message ?? "").trim();
-  const clientMessageId = rawMessage?.clientMessageId;
-  const messageId = rawMessage?.id ?? rawMessage?.messageId;
+  const timestamp = normalizeTimestamp(
+    rawMessage?.timestamp ?? rawMessage?.createdAt
+  );
 
-  // Ensure we have a stable, non-empty sender
-  if (!normalizedSender || normalizedSender === "Unknown") {
+  const normalizedSender = String(
+    rawMessage?.sender ?? rawMessage?.senderId ?? ""
+  ).trim();
+
+  const normalizedContent = String(
+    rawMessage?.content ?? rawMessage?.message ?? rawMessage?.text ?? ""
+  ).trim();
+
+  const clientMessageId = rawMessage?.clientMessageId ?? null;
+  const messageId = rawMessage?.id ?? rawMessage?.messageId ?? String(Date.now());
+
+  // Debug warning if sender missing
+  if (!normalizedSender) {
     console.warn("[normalizeMessage] Empty sender detected:", rawMessage);
   }
 
   return {
-    id:
-      messageId ??
-      clientMessageId ??
-      `${normalizedSender}-${fallbackGroupId}-${timestamp}-${normalizedContent.slice(0, 40)}`,
-    sender: normalizedSender,
-    content: normalizedContent,
-    groupId: String(rawMessage?.groupId ?? fallbackGroupId),
-    roles: rawMessage?.roles ?? rawMessage?.role ?? "USER",
+    id: messageId,
+    groupId: rawMessage?.groupId ?? fallbackGroupId,
+    senderId: normalizedSender,
+    senderName: rawMessage?.senderName ?? rawMessage?.userName ?? "Unknown",
+    senderRole: rawMessage?.senderRole ?? rawMessage?.role ?? "student",
+    text: normalizedContent,
     timestamp,
-    clientMessageId
+    readBy: rawMessage?.readBy ?? [],
+    clientMessageId,
   };
 }

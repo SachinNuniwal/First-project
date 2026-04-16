@@ -57,40 +57,66 @@ export default function AdminDashboard() {
 
     const showToast = useCallback((msg) => setToast(msg), []);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [teachersData, studentsData, classesData] = await Promise.all([
-                    apiService.getAllTeachers(),
-                    apiService.getAllStudents(),
-                    apiService.getAllClasses()
-                ]);
-                setTeachers(teachersData);
-                setStudents(studentsData);
-                setClasses(classesData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                showToast('Error loading data from server');
-            }
-        };
-        fetchData();
-    }, []);
+    // In the useEffect where you fetch data, add this:
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // 🔹 API calls
+      const [teachersData, studentsData, classesData, leavesData] = await Promise.all([
+        apiService.getAllTeachers(),
+        apiService.getAllStudents(),
+        apiService.getAllClasses(),
+        apiService.getPendingLeaveRequests(),
+      ]);
 
-    const approveLeave = (id) => {
-        const leave = pendingLeaves.find(l => l.id === id);
-        if (!leave) return;
-        setPendingLeaves(prev => prev.filter(l => l.id !== id));
-        setLeaveHistory(prev => [{ ...leave, id: Date.now(), status: 'Approved', approvedBy: profile.name }, ...prev]);
-        showToast(`✅ Leave approved for ${leave.teacher}`);
-    };
+      setTeachers(teachersData);
+      setStudents(studentsData);
+      setClasses(classesData);
+      setPendingLeaves(leavesData);
 
-    const rejectLeave = (id) => {
-        const leave = pendingLeaves.find(l => l.id === id);
-        if (!leave) return;
-        setPendingLeaves(prev => prev.filter(l => l.id !== id));
-        setLeaveHistory(prev => [{ ...leave, id: Date.now(), status: 'Rejected', approvedBy: profile.name }, ...prev]);
-        showToast(`❌ Leave rejected for ${leave.teacher}`);
-    };
+      // 🔹 Local initial data (events, notices, messages, notifications)
+      const {
+        initialEvents,
+        initialNotices,
+        initialConversations,
+        initialNotifications
+      } = await import('../data/initialData');
+
+      setEvents(initialEvents);
+      setNotices(initialNotices);
+      setConversations(initialConversations);
+      setNotifications(initialNotifications);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      showToast('Error loading data from server');
+    }
+  };
+
+  fetchData();
+}, []);
+
+   const approveLeave = async (id) => {
+  try {
+    const updated = await apiService.approveLeave(id);          // ✅ call API
+    setPendingLeaves(prev => prev.filter(l => l.id !== id));
+    setLeaveHistory(prev => [{ ...updated, status: 'Approved' }, ...prev]);
+    showToast(`✅ Leave approved for ${updated.teacherName}`);
+  } catch (e) {
+    showToast('❌ Error approving leave');
+  }
+};
+
+const rejectLeave = async (id) => {
+  try {
+    const updated = await apiService.rejectLeave(id);           // ✅ call API
+    setPendingLeaves(prev => prev.filter(l => l.id !== id));
+    setLeaveHistory(prev => [{ ...updated, status: 'Rejected' }, ...prev]);
+    showToast(`❌ Leave rejected for ${updated.teacherName}`);
+  } catch (e) {
+    showToast('❌ Error rejecting leave');
+  }
+};
 
     const addTeacher = async (t) => {
         try {

@@ -24,7 +24,7 @@ function AppRoutes() {
       <Route path="/" element={<LoginWrapper />} />
       <Route path="/dashboard" element={<AdminDashboard />} />
       <Route path="/teacher" element={<TeacherDashboard />} />
-      <Route path="/teacher/:teacherId" element={<TeacherDashboard />} />  {/* ✅ naya */}
+      <Route path="/teacher/:teacherId" element={<TeacherDashboard />} />
       <Route path="/student" element={<StudentDashboard />} />
     </Routes>
   );
@@ -32,11 +32,7 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    // BrowserRouter must be outermost so useNavigate works in LoginWrapper
-    // ThemeProvider wraps everything for theme context
-    // ResultProvider is inside BrowserRouter but wraps all routes so
-    // teacher & student share the same result data
-    <BrowserRouter>
+    <BrowserRouter> {/* ✅ MOVE IT HERE */}
       <ThemeProvider>
         <ResultProvider>
           <AppRoutes />
